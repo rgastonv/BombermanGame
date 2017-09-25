@@ -7,7 +7,9 @@
   <li><b>Nombre del juego:</b> Bomberman</li>
   <li><b>Descripción de la temática del juego:</b> </li>
    <br>
-  <PRE> Cada jugador deberá mover su personaje a través del laverinto evitando las explosiones de las bombas de sus contrincantes y colocar sus propias bombas estratégicamente para derrotar a sus enemigos. Al romper el muro pueden aparecer objetos que mejorarán nuestras habilidades ( mayor velocidad, más munición y bombas con más rango.)
+  <PRE> Cada jugador deberá mover su personaje a través del laverinto evitando las explosiones de las bombas de sus contrincantes
+    <br>y colocar sus propias bombas estratégicamente para derrotar a sus enemigos. Al romper el muro pueden aparecer objetos
+    <br>que mejorarán nuestras habilidades ( mayor velocidad, más munición y bombas con más rango.)
     <br>
     <PRE> <b>Reglas del juego</b>
       <ul>
