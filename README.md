@@ -8,13 +8,13 @@
   <li><b>Descripción de la temática del juego:</b> </li>
   <li><b>Integrantes del equipo de desarrollo:</b></li>
   <ul>
-     <li><b>Nombre y apellidos:</b> </li>
-    <li><b>Correo de URJC:</b> </li>
-    <li><b>Cuenta de github:</b> </li>
+     <li><b>Nombre y apellidos:</b> Andrés Felipe García </li>
+    <li><b>Correo de URJC:</b>  a.felipeg@alumnos.urjc.es </li>
+    <li><b>Cuenta de github:</b> luk224 </li>
   </ul>
   <br>
   <ul>
-    <li><b>Nombre y apellidos:</b>frfr </li>
+    <li><b>Nombre y apellidos:</b> </li>
     <li><b>Correo de URJC:</b> </li>
     <li><b>Cuenta de github:</b> </li>
   </ul>
