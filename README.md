@@ -14,9 +14,9 @@
   </ul>
   <br>
   <ul>
-    <li><b>Nombre y apellidos:</b> </li>
-    <li><b>Correo de URJC:</b> </li>
-    <li><b>Cuenta de github:</b> </li>
+    <li><b>Nombre y apellidos:</b> Elena Beatriz Chueca Morales </li>
+    <li><b>Correo de URJC:</b> eb.chueca@urjc.es </li>
+    <li><b>Cuenta de github:</b> ElenaChueca </li>
   </ul>
   <br>
   <ul>
