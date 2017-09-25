@@ -3,7 +3,7 @@
 ### Fase 1
 <br>
 <ul>
-  <li><b>Nombre del juego:</b> Bomberman</li>
+  <li><b>Nombre del juego:</b> Bomberman </li>
   <li><b>Descripción de la temática del juego:</b>
      <br>
      Cada jugador deberá mover su personaje a través del laberinto evitando las explosiones de las bombas de sus contrincantes y colocar  sus propias bombas estratégicamente para derrotarlos. Al romper el muro, pueden aparecer objetos que mejorarán nuestras habilidades (mayor velocidad, más munición y bombas con más rango).
@@ -18,6 +18,7 @@
         <li>Hay bloques de metal que no se pueden romper con nada.</li>
         <li>Los personajes pueden atravesarse entre sí, pero no las bombas y bloques.</li>
    </ul>
+   <br>
   </li>
     
   <li><b>Integrantes del equipo de desarrollo:</b>
