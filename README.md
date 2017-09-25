@@ -13,13 +13,13 @@
     <br>
     <PRE> <b>Reglas del juego</b>
       <ul>
-        <li>Cada jugador tiene una vida por partida</li>
+        <li>Cada jugador tiene una vida por partida.</li>
         <li>Los jugadores sólo pueden moverse en horizontal y vertical, no podrán atravesar los muros.</li>
         <li>Cada jugador tendrá un nº máximo de bombas que podrá poner a la vez, ese número podrá incrementar con bonificadores.</li>
-        <li>Las bombas sólo explotan en horizontal y vertical, con un rango ampliable por bonificadores y limitado por los muros</li>
+        <li>Las bombas sólo explotan en horizontal y vertical, con un rango ampliable por bonificadores y limitado por los muros.</li>
         <li>Las bombas pueden matar a cualquier personaje, inclusive a aquel que la ha puesto.</li>
-        <li>Hay  bloques de metal que no se pueden romper con nada</li>
-        <li>Los personajes pueden atravesarse entre sí, pero no las bombas y bloques</li>
+        <li>Hay  bloques de metal que no se pueden romper con nada.</li>
+        <li>Los personajes pueden atravesarse entre sí, pero no las bombas y bloques.</li>
       </ul>
   <li><b>Integrantes del equipo de desarrollo:</b></li>
   <ul>
