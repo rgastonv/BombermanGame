@@ -15,7 +15,7 @@
   <br>
   <ul>
     <li><b>Nombre y apellidos:</b> Elena Beatriz Chueca Morales </li>
-    <li><b>Correo de URJC:</b> eb.chueca@urjc.es </li>
+    <li><b>Correo de URJC:</b> eb.chueca@alumnos.urjc.es </li>
     <li><b>Cuenta de github:</b> ElenaChueca </li>
   </ul>
   <br>
