@@ -1,5 +1,36 @@
 
-var game = new Phaser.Game(568,704 , Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(544,728 , Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+
+var mapa = [
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+
+                [3,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,3],
+                [3,1,3,0,3,0,3,0,3,0,3,0,3,0,3,1,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,1,3,0,3,0,3,0,3,0,3,0,3,0,3,1,3],
+                [3,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,3],
+
+                [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],
+                [3,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],
+
+                [3,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,3],
+                [3,1,3,0,3,0,3,0,3,0,3,0,3,0,3,1,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3],
+                [3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3],
+                [3,1,3,0,3,0,3,0,3,0,3,0,3,0,3,1,3],
+                [3,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,3],
+
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+ 
+            ];
 
 function preload() {
 
@@ -10,6 +41,8 @@ function preload() {
     game.load.image('ladrillo', 'Sprites/Sprites_bloque_ladrillo.png');
     game.load.image('piedra2', 'Sprites/Sprites_bloque_piedra2.png');
     game.load.image('ladrillo2', 'Sprites/Sprites_bloque_ladrillo2.png');
+    game.load.image('cesped1', 'Sprites/Sprites_cesped1.png');
+    game.load.image('cesped2', 'Sprites/Sprites_cesped2.png');
    
 }
 
@@ -30,6 +63,39 @@ function create() {
     
     //  A simple background for our game
     game.add.sprite(0,0,'fondo');
+    var anchura = 32;
+    for (var j = 0; j <mapa[0].length ; j++) {
+        game.add.sprite(j*anchura,0,'piedra');
+    };
+
+    var altura = 32;
+    for (var i = 1; i <mapa.length; i++) {
+        fila = mapa[i];
+        for (var j = 0; j <fila.length ; j++) {
+            if (fila[j] == 0 || fila[j] == 1) {
+                if(Math.random() < 0.75 && fila[j] == 0){
+                      game.add.sprite(j*anchura,i*altura+12,'ladrillo2');
+                }else{
+                    if ((j+i) %2 ==0) {
+                        game.add.sprite(j*anchura,i*altura+12,'cesped2');
+                    }else{
+                        game.add.sprite(j*anchura,i*altura+12,'cesped1');
+                    };
+                }
+            };
+            if (fila[j] == 2) {
+                game.add.sprite(j*anchura,i*altura+12,'piedra');
+            };
+            if (fila[j] == 3) {
+                game.add.sprite(j*anchura,i*altura+12,'piedra2');
+            };
+            if (fila[j] == 5) {
+                game.add.sprite(j*anchura,i*altura+12,'ladrillo2');
+            };
+
+            
+        };
+    };
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     
@@ -63,23 +129,8 @@ function create() {
     player.animations.add('right',  [0, 1, 2, 3,4],10, true);
 
    
-    for(var i = 0; i < 12; i++)
-    {
-        //  Create a star inside of the 'LADRILLO' group
-        var bloqueLadrillo = ladrillos.create(i * 30, 0, 'ladrillo2');
-        bloqueLadrillo.body.immovable = true;
-
-    }
-    for(var i = 0; i < 12; i++)
-    {
-        for (var j=0; j<5; j++){
-        //  Creamos filas y columnas de piedras para comprobar colisiones. 
-        var bloquePiedra = piedras.create(i * 70, j*90, 'piedra2');
-        bloquePiedra.body.immovable = true;
-        }
-
-
-    }
+  
+    
 
 
     //  The score
