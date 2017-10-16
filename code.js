@@ -32,10 +32,12 @@ var mapa = [
  
             ];
 
+
+
 function preload() {
 
-
-    game.load.spritesheet('prota', 'Sprites/Sprites_prota_1.png', 38, 64);
+    game.load.spritesheet('prota1', 'Sprites/Sprites_prota_1.png', 38, 64);
+    game.load.spritesheet('prota2', 'Sprites/Sprites_prota_2.png', 38, 64);
     game.load.image('fondo', 'Sprites/fondo.png');
     game.load.image('piedra', 'Sprites/Sprites_bloque_piedra.png');
     game.load.image('ladrillo', 'Sprites/Sprites_bloque_ladrillo.png');
@@ -46,7 +48,9 @@ function preload() {
    
 }
 
-var player;
+
+var player1;
+var player2;
 var cursors;
 
 
@@ -60,11 +64,9 @@ var scoreText;
 
 function create() {
 
-    
-    //  A simple background for our game
     game.add.sprite(0,0,'fondo');
     var anchura = 32;
-    for (var j = 0; j <mapa[0].length ; j++) {
+    for (var j = 0; j < mapa[0].length; j++) {
         game.add.sprite(j*anchura,0,'piedra');
     };
 
@@ -74,7 +76,7 @@ function create() {
         for (var j = 0; j <fila.length ; j++) {
             if (fila[j] == 0 || fila[j] == 1) {
                 if(Math.random() < 0.75 && fila[j] == 0){
-                      game.add.sprite(j*anchura,i*altura+12,'ladrillo2');
+                      game.add.sprite(j*anchura,i*altura+12,'ladrillo2'); //Los ladrillos se crean aleatoriamente con una probabilidad del 75%
                 }else{
                     if ((j+i) %2 ==0) {
                         game.add.sprite(j*anchura,i*altura+12,'cesped2');
@@ -97,36 +99,47 @@ function create() {
         };
     };
 
-    //  The platforms group contains the ground and the 2 ledges we can jump on
     
     ladrillos = game.add.group();
     piedras = game.add.group();
     piedrasBordes = game.add.group();
     
 
-    //  We will enable physics for any object that is created in this group
     ladrillos.enableBody = true;
     piedras.enableBody = true;
     piedrasBordes.enableBody = true;
 
     
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     //ground.scale.setTo(2, 2);
 
     
-    // The player and its settings
-    player = game.add.sprite(32, game.world.height - 150, 'prota');
+    // Jugadores y sus configuraciones
+    player1 = game.add.sprite(30, game.world.height - 108, 'prota1');
+    player2 = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
   
-    //  We need to enable physics on the player
-    game.physics.arcade.enable(player);
+
+    // Se activan las físicas de los jugadores
+    game.physics.arcade.enable(player1);
+    game.physics.arcade.enable(player2);
 
 
-    player.body.collideWorldBounds = true;
-    player.body.setSize(16, 20, 8, 38); //Caja de colisiones del personaje. Se puede modificar más detalladamente. No poner más abajo que peta. 
+    player1.body.collideWorldBounds = true;
+    player2.body.collideWorldBounds = true;
 
-    //  Our two animations, walking left and right.
-    player.animations.add('left', [0, 1, 2, 3,4], 10, true); //Se crea una animación "left" con los primeros cuatro sprites de "dude", a 10 fps y con loop (true)
-    player.animations.add('right',  [0, 1, 2, 3,4],10, true);
+
+    player1.body.setSize(24, 18, 8, 36); //Caja de colisiones del personaje. Se puede modificar más detalladamente. No poner más abajo que peta.
+    player2.body.setSize(24, 18, 8, 36);
+
+    
+    player1.animations.add('right', [0, 1, 2, 3, 4], 10, true); //Se crea una animación "right" con los primeros cinco sprites, a 10 fps y con loop (true)
+    player1.animations.add('left', [5, 6, 7, 8, 9], 10, true);
+    player1.animations.add('down', [10, 11, 12, 13, 14], 15, true);
+    player1.animations.add('up', [15, 16, 17, 18, 19], 15, true);
+
+    player2.animations.add('right', [0, 1, 2, 3, 4], 10, true);
+    player2.animations.add('left', [5, 6, 7, 8, 9], 10, true);
+    player2.animations.add('down', [10, 11, 12, 13, 14], 15, true);
+    player2.animations.add('up', [15, 16, 17, 18, 19], 15, true);
 
    
   
@@ -136,50 +149,99 @@ function create() {
     //  The score
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-    //  Our controls.
+    // Para los controles por teclado
     cursors = game.input.keyboard.createCursorKeys();
     
 }
 
+
+
 function update() {
 
+    game.physics.arcade.collide(player1, ladrillos);
+    game.physics.arcade.collide(player1, piedras);
+
+    game.physics.arcade.collide(player2, ladrillos);
+    game.physics.arcade.collide(player2, piedras);
 
 
-    game.physics.arcade.collide(player, ladrillos);
-    game.physics.arcade.collide(player, piedras);
+    //  Se resetea la velocidad de los jugadores
+    player1.body.velocity.x = 0;
+    player1.body.velocity.y = 0;
+
+    player2.body.velocity.x = 0;
+    player2.body.velocity.y = 0;
 
 
-    //  Reset the players velocity (movement)
-    player.body.velocity.x = 0;
-    player.body.velocity.y = 0;
-
+    // Controles del jugador 1: ASDW
     if (game.input.keyboard.isDown(Phaser.Keyboard.A))
     {
-        //  Move to the left
-        player.body.velocity.x = -150;
+        //Izquierda
+        player1.body.velocity.x = -150;
+        player1.animations.play('left');
 
-        player.animations.play('left');
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
     {
-        //  Move to the right
-        player.body.velocity.x = 150;
+        //Derecha
+        player1.body.velocity.x = 150;
+        player1.animations.play('right');
 
-        player.animations.play('right');
-    }else if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
-        //Move up
-        player.body.velocity.y = -150;
+    }else if (game.input.keyboard.isDown(Phaser.Keyboard.W))
+    {
+        //Arriba
+        player1.body.velocity.y = -150;
+        player1.animations.play('up');
+
     }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-        //Move down
-        player.body.velocity.y = 150;
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
+    {
+        //Abajo
+        player1.body.velocity.y = 150;
+        player1.animations.play('down');
+
     }
     else
     {
-        //  Stand still
-        player.animations.stop();
+        //Quieto
+        player1.animations.stop();
+        player1.frame = 11;
+    }
 
-        player.frame = 4;
+
+
+    //Controles del jugador 2: flechas
+    if (cursors.left.isDown)
+    {
+        //Izquierda
+        player2.body.velocity.x = -150;
+
+        player2.animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        //Derecha
+        player2.body.velocity.x = 150;
+
+        player2.animations.play('right');
+    }else if (cursors.up.isDown)
+    {
+        //Arriba
+        player2.body.velocity.y = -150;
+        player2.animations.play('up');
+    }
+    else if (cursors.down.isDown)
+    {
+        //Abajo
+        player2.body.velocity.y = 150;
+        player2.animations.play('down');
+    }
+    else
+    {
+        //Quieto
+        player2.animations.stop();
+
+        player2.frame = 11;
     }
     
 
