@@ -48,19 +48,117 @@ function preload() {
    
 }
 
+var player = function(posx, posy){
+    var pos = [posx,posy];
 
-var player1;
-var player2;
+    this.getPos = function(){
+        return pos;
+    }
+
+}
+var jugadores = [];
+
+var numJugadores = 2;
+//TODO Meter dentro de create despues de preguntar el número de jugadores.
+for(var i = 0;i<numJugadores;i++){
+    var nuevoJugador = new player(20*i,85*i);
+    jugadores.push(nuevoJugador);
+}
+
 var cursors;
-
-
 var ladrillos; //Para el grupo
 var piedras;
 var piedrasBordes;
 
-
 var score = 0;
 var scoreText;
+
+
+function moverJugadores(){
+    // Controles del jugador 1: ASDW
+    if (game.input.keyboard.isDown(Phaser.Keyboard.A))
+    {
+        //Izquierda
+        jugadores[0].body.velocity.x = -150;
+        jugadores[0].animations.play('left');
+
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
+    {
+        //Derecha
+        jugadores[0].body.velocity.x = 150;
+        jugadores[0].animations.play('right');
+
+    }else if (game.input.keyboard.isDown(Phaser.Keyboard.W))
+    {
+        //Arriba
+        jugadores[0].body.velocity.y = -150;
+        jugadores[0].animations.play('up');
+
+    }
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
+    {
+        //Abajo
+        jugadores[0].body.velocity.y = 150;
+        jugadores[0].animations.play('down');
+
+    }
+    else
+    {
+        //Quieto
+        jugadores[0].animations.stop();
+        jugadores[0].frame = 11;
+    }
+
+
+
+    //Controles del jugador 2: flechas
+    if (cursors.left.isDown)
+    {
+        //Izquierda
+        jugadores[1].body.velocity.x = -150;
+
+        jugadores[1].animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        //Derecha
+        jugadores[1].body.velocity.x = 150;
+
+        jugadores[1].animations.play('right');
+    }else if (cursors.up.isDown)
+    {
+        //Arriba
+        jugadores[1].body.velocity.y = -150;
+        jugadores[1].animations.play('up');
+    }
+    else if (cursors.down.isDown)
+    {
+        //Abajo
+        jugadores[1].body.velocity.y = 150;
+        jugadores[1].animations.play('down');
+    }
+    else
+    {
+        //Quieto
+        jugadores[1].animations.stop();
+
+        jugadores[1].frame = 11;
+    }
+}
+function colYResetVel(){
+    for(var i = 0; i<jugadores.length;i++){
+        //  Se resetea la velocidad de los jugadores
+        jugadores[i].body.velocity.x = 0;
+        jugadores[i].body.velocity.y = 0;
+
+        //Collision
+        game.physics.arcade.collide(jugadores[i], ladrillos);
+        game.physics.arcade.collide(jugadores[i], piedras);    
+
+                
+    }
+}
 
 function create() {
 
@@ -114,32 +212,32 @@ function create() {
 
     
     // Jugadores y sus configuraciones
-    player1 = game.add.sprite(30, game.world.height - 108, 'prota1');
-    player2 = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
+    jugadores[0] = game.add.sprite(30, game.world.height - 108, 'prota1');
+    jugadores[1] = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
   
 
     // Se activan las físicas de los jugadores
-    game.physics.arcade.enable(player1);
-    game.physics.arcade.enable(player2);
+    game.physics.arcade.enable(jugadores[0] );
+    game.physics.arcade.enable(jugadores[1] );
 
 
-    player1.body.collideWorldBounds = true;
-    player2.body.collideWorldBounds = true;
+    jugadores[0].body.collideWorldBounds = true;
+    jugadores[1].body.collideWorldBounds = true;
 
 
-    player1.body.setSize(24, 18, 8, 36); //Caja de colisiones del personaje. Se puede modificar más detalladamente. No poner más abajo que peta.
-    player2.body.setSize(24, 18, 8, 36);
+    jugadores[0].body.setSize(24, 18, 8, 36); //Caja de colisiones del personaje. Se puede modificar más detalladamente. No poner más abajo que peta.
+    jugadores[1].body.setSize(24, 18, 8, 36);
 
     
-    player1.animations.add('right', [0, 1, 2, 3, 4], 10, true); //Se crea una animación "right" con los primeros cinco sprites, a 10 fps y con loop (true)
-    player1.animations.add('left', [5, 6, 7, 8, 9], 10, true);
-    player1.animations.add('down', [10, 11, 12, 13, 14], 15, true);
-    player1.animations.add('up', [15, 16, 17, 18, 19], 15, true);
+    jugadores[0].animations.add('right', [0, 1, 2, 3, 4], 10, true); //Se crea una animación "right" con los primeros cinco sprites, a 10 fps y con loop (true)
+    jugadores[0].animations.add('left', [5, 6, 7, 8, 9], 10, true);
+    jugadores[0].animations.add('down', [10, 11, 12, 13, 14], 15, true);
+    jugadores[0].animations.add('up', [15, 16, 17, 18, 19], 15, true);
 
-    player2.animations.add('right', [0, 1, 2, 3, 4], 10, true);
-    player2.animations.add('left', [5, 6, 7, 8, 9], 10, true);
-    player2.animations.add('down', [10, 11, 12, 13, 14], 15, true);
-    player2.animations.add('up', [15, 16, 17, 18, 19], 15, true);
+    jugadores[1].animations.add('right', [0, 1, 2, 3, 4], 10, true);
+    jugadores[1].animations.add('left', [5, 6, 7, 8, 9], 10, true);
+    jugadores[1].animations.add('down', [10, 11, 12, 13, 14], 15, true);
+    jugadores[1].animations.add('up', [15, 16, 17, 18, 19], 15, true);
 
    
   
@@ -158,92 +256,10 @@ function create() {
 
 function update() {
 
-    game.physics.arcade.collide(player1, ladrillos);
-    game.physics.arcade.collide(player1, piedras);
-
-    game.physics.arcade.collide(player2, ladrillos);
-    game.physics.arcade.collide(player2, piedras);
-
-
-    //  Se resetea la velocidad de los jugadores
-    player1.body.velocity.x = 0;
-    player1.body.velocity.y = 0;
-
-    player2.body.velocity.x = 0;
-    player2.body.velocity.y = 0;
-
-
-    // Controles del jugador 1: ASDW
-    if (game.input.keyboard.isDown(Phaser.Keyboard.A))
-    {
-        //Izquierda
-        player1.body.velocity.x = -150;
-        player1.animations.play('left');
-
-    }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
-    {
-        //Derecha
-        player1.body.velocity.x = 150;
-        player1.animations.play('right');
-
-    }else if (game.input.keyboard.isDown(Phaser.Keyboard.W))
-    {
-        //Arriba
-        player1.body.velocity.y = -150;
-        player1.animations.play('up');
-
-    }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
-    {
-        //Abajo
-        player1.body.velocity.y = 150;
-        player1.animations.play('down');
-
-    }
-    else
-    {
-        //Quieto
-        player1.animations.stop();
-        player1.frame = 11;
-    }
-
-
-
-    //Controles del jugador 2: flechas
-    if (cursors.left.isDown)
-    {
-        //Izquierda
-        player2.body.velocity.x = -150;
-
-        player2.animations.play('left');
-    }
-    else if (cursors.right.isDown)
-    {
-        //Derecha
-        player2.body.velocity.x = 150;
-
-        player2.animations.play('right');
-    }else if (cursors.up.isDown)
-    {
-        //Arriba
-        player2.body.velocity.y = -150;
-        player2.animations.play('up');
-    }
-    else if (cursors.down.isDown)
-    {
-        //Abajo
-        player2.body.velocity.y = 150;
-        player2.animations.play('down');
-    }
-    else
-    {
-        //Quieto
-        player2.animations.stop();
-
-        player2.frame = 11;
-    }
     
+    colYResetVel();
+
+    moverJugadores();    
 
 }
 
