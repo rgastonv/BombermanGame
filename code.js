@@ -1,6 +1,53 @@
 
 var game = new Phaser.Game(544,716 , Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
+function crearBomba(x,y){
+    var nuevaBomba = new bomba(game, [x,y],jugadores[0].rango);
+    game.add.existing(nuevaBomba);
+}
+
+var jugador = function(game, x, y){
+    
+    Phaser.Sprite.call(this, game, x , y, 'prota1');
+    this.rango= 1;
+
+    this.getPos= function (){ //Devuelve la posición parametrizada para la matriz.
+        var pos= [];
+        pos[0]= Math.floor((this.position.x+19)/32) ;
+        pos[1]= Math.floor(((this.position.y-12)+51)/32);  
+
+        //console.log("X:"+ pos[0] + "Y:"+ pos[1] + " pox= "+ this.position.x + "posy "+ this.position.y);
+        return pos;
+    }
+
+
+    this.ponerBomba = function(){
+        mapa[this.getPos()[1]] [this.getPos()[0]] = 4;
+        crearBomba(this.getPos()[1],this.getPos()[0]);
+    }
+
+}
+
+    
+    jugador.prototype = Object.create(Phaser.Sprite.prototype);
+    jugador.prototype.constructor = jugador;
+
+
+    var bomba = function(game, pos, rango){
+        console.log("Peneeee");
+        Phaser.Sprite.call(this, game,pos[0]*32, pos[1]*32+12, 'bombas');
+        this.rango= rango;
+    
+        
+
+        this.temporizador=3;
+
+    }
+
+    bomba.prototype = Object.create(Phaser.Sprite.prototype);
+    bomba.prototype.constructor = bomba;
+
+
 
 var mapa = [
                 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -32,6 +79,36 @@ var mapa = [
  
             ];
 
+var mapaLadrillos = [
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+ 
+            ];
+
 
             var cursors;
 
@@ -46,37 +123,43 @@ function preload() {
 
     game.load.spritesheet('prota1', 'Sprites/Sprites_prota_1.png', 38, 64);
     game.load.spritesheet('prota2', 'Sprites/Sprites_prota_2.png', 38, 64);
+
+    game.load.spritesheet('bombas','Sprites/Sprites_bombas.png', 40, 40);
+
     game.load.image('fondo', 'Sprites/fondo.png');
     game.load.image('piedra', 'Sprites/Sprites_bloque_piedra.png');
     game.load.image('ladrillo', 'Sprites/Sprites_bloque_ladrillo.png');
     game.load.image('piedra2', 'Sprites/Sprites_bloque_piedra2.png');
     game.load.image('ladrillo2', 'Sprites/Sprites_bloque_ladrillo2.png');
-    //game.load.image('cesped1', 'Sprites/Sprites_cesped1.png');
-    //game.load.image('cesped2', 'Sprites/Sprites_cesped2.png');
+
     game.load.image('tubos', 'Sprites/tubos.png');
     game.load.image('tubo', 'Sprites/tubo.png');
     game.load.image('arbol2', 'Sprites/arbol2.png');
     game.load.image('muroInferior','Sprites/Muro_inferior.png');
+ 
    
 }
 
-var jugador = function(posx, posy){
-    var pos = [posx,posy];
 
+
+
+var bomba = function(posx, posy, rango){
+    var pos = [posx,posy];
     this.getPos = function(){
         return pos;
     }
+    var rango=1;
+    var tiempo= 3; 
 }
-
 var jugadores = [];
-
 var numJugadores = 2;
 //TODO Meter dentro de create despues de preguntar el número de jugadores.
-for(var i = 0;i<numJugadores;i++){
-    var nuevoJugador = new jugador(20*i,85*i);
-    jugadores.push(nuevoJugador);
-}
+// for(var i = 0;i<numJugadores;i++){
+//     var nuevoJugador = new jugador(20*i,85*i);
+//     jugadores.push(nuevoJugador);
+// }
 
+var bombas= [];
 
 
 var score = 0;
@@ -111,6 +194,8 @@ function moverJugadores(){
         jugadores[0].body.velocity.y = 150;
         jugadores[0].animations.play('down');
 
+    }else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){
+        jugadores[0].ponerBomba();
     }
     else
     {
@@ -118,6 +203,7 @@ function moverJugadores(){
         jugadores[0].animations.stop();
         jugadores[0].frame = 11;
     }
+    
 
 
 
@@ -197,33 +283,28 @@ function create() {
         piedraBorde.body.immovable = true;
     };
 
+    var contador =0;
     var altura = 32;
     for (var i = 1; i <mapa.length; i++) {
         fila = mapa[i];
         for (var j = 0; j <fila.length ; j++) {
-            if (fila[j] == 0 || fila[j] == 1) {
-                if(Math.random() < 0.75 && fila[j] == 0){
-                      
-                      var bloqueLadrillo = ladrillos.create(j*anchura, i*altura+12, 'ladrillo2'); //Los ladrillos se crean aleatoriamente con una probabilidad del 75%
-                      game.world.bringToTop(ladrillos);
+            if(Math.random() < 0.75 && fila[j] == 0){
+                mapaLadrillos[i][j] = contador;
+                contador++;
+                var bloqueLadrillo = ladrillos.create(j*anchura, i*altura+12, 'ladrillo2'); //Los ladrillos se crean aleatoriamente con una probabilidad del 75%
+                game.world.bringToTop(ladrillos);
 
-                      bloqueLadrillo.body.immovable = true;
-                /*}else{
-                    if ((j+i) %2 ==0) {
-                        game.add.sprite(j*anchura,i*altura+12,'cesped2');
-                    }else{
-                        game.add.sprite(j*anchura,i*altura+12,'cesped1');
-                    };*/
-                }
-            };
-            
-            if (fila[j] == 3) {
+                bloqueLadrillo.body.immovable = true;
+            }else if(fila[j] == 3) {
                 var bloquePiedra = piedras.create(j*anchura,i*altura+12,'piedra2');
                 game.world.bringToTop(piedras);
                 bloquePiedra.body.immovable = true;
-
-
-            };
+            }else{
+                if(fila[j]==4)
+                {
+                    
+                }
+            }
                        
         };
     };
@@ -236,9 +317,14 @@ function create() {
 
     
     // Jugadores y sus configuraciones
-    jugadores[0] = game.add.sprite(30, game.world.height - 108, 'prota1');
-    jugadores[1] = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
-  
+    jugadores[0] = new jugador(game,30,game.world.height -108);
+    jugadores[1] = new jugador(game,game.world.width - 68, game.world.height - 108);
+    
+
+    // jugadores[0] = game.add.sprite(30, game.world.height - 108, 'prota1');
+    // jugadores[1] = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
+    game.add.existing(jugadores[0]);
+    game.add.existing(jugadores[1]);
 
     // Se activan las físicas de los jugadores
     game.physics.arcade.enable(jugadores[0] );
@@ -310,6 +396,5 @@ function update() {
     colYResetVel();
 
     moverJugadores();    
-
 }
 
