@@ -43,5 +43,18 @@
   
   <br>
   <li><b><a href="http://trello.com/b/Pxu6exQQ/juegos-en-red">Tablero de Trello</a></b></li>
+  
+  <br>
+  
+  <li><b>Referencias externas:</b>
+  <br>
+  <ul>
+    <li><b>Imágenes: </b><a href="https://www.deviantart.com/art/3D-Bomberman-Custom-Sheet-127714831">Sprites</a> de <a href="https://kylontario.deviantart.com/">Kylontario</a> en DeviantArt.
+    </li>
+    
+  </ul>
+  
+  
+  
 
 </ul>
