@@ -28,6 +28,7 @@ var mapa = [
                 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
      ];
 
+
 var mapaLadrillos = [
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 
@@ -60,6 +61,7 @@ var mapaLadrillos = [
 var jugadores = [];
 var bombas = [];
 
+
 var cursors;
 var ladrillos; //Para el grupo
 var piedras;
@@ -72,10 +74,17 @@ function preload() {
 
     game.load.spritesheet('prota1', 'Sprites/Sprites_prota_1.png', 38, 64);
     game.load.spritesheet('prota2', 'Sprites/Sprites_prota_2.png', 38, 64);
+    game.load.spritesheet('prota3', 'Sprites/Sprites_prota_3.png', 38, 64);
+    game.load.spritesheet('prota4', 'Sprites/Sprites_prota_4.png', 38, 64);
+    game.load.spritesheet('prota5', 'Sprites/Sprites_prota_5.png', 38, 64);
+    game.load.spritesheet('prota6', 'Sprites/Sprites_prota_6.png', 38, 64);
+    game.load.spritesheet('prota7', 'Sprites/Sprites_prota_7.png', 38, 64);
+    game.load.spritesheet('prota8', 'Sprites/Sprites_prota_8.png', 38, 64);
 
     game.load.spritesheet('bombas','Sprites/Sprites_bombas.png', 40, 40);
 
     game.load.image('fondo', 'Sprites/fondo.png');
+    game.load.image('rojo','Sprites/red.png');
     game.load.image('piedra', 'Sprites/Sprites_bloque_piedra.png');
     game.load.image('ladrillo', 'Sprites/Sprites_bloque_ladrillo.png');
     game.load.image('piedra2', 'Sprites/Sprites_bloque_piedra2.png');
@@ -93,17 +102,35 @@ var jugador = function(id){//Objeto Jugador
     //id es el numero de jugador empieza en 0
     var id = id;
     var sprite;
-    var rng; //Rango de sus bombas
+    this.rng; //Rango de sus bombas
     var vel; // Velocidad
-    var nBombas;
+    this.nBombas;
     //Funciones:
     this.init = function(){ //Inicializa al personaje
         switch(id){
             case 0:
-                sprite = game.add.sprite(30, game.world.height - 108, 'prota1');
+                sprite = game.add.sprite(30, 12, 'prota1');
                 break;
             case 1:
-                sprite = game.add.sprite(game.world.width - 68, game.world.height - 108, 'prota2');
+                sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
+                break;
+            case 2:
+                sprite = game.add.sprite(30, 268, 'prota3');
+                break;
+            case 3:
+                sprite = game.add.sprite(game.world.width - 68, 268, 'prota4');
+                break;
+            case 4:
+                sprite = game.add.sprite(30, 396, 'prota5');
+                break;
+            case 5:
+                sprite = game.add.sprite(game.world.width - 68, 396, 'prota6');
+                break;
+            case 6:
+                sprite = game.add.sprite(30, 620, 'prota7');
+                break;
+            case 7:
+                sprite = game.add.sprite(game.world.width - 68, 620, 'prota8');
                 break;
         }
         game.physics.arcade.enable(sprite);// Se activan las físicas de los jugadores
@@ -114,8 +141,8 @@ var jugador = function(id){//Objeto Jugador
         sprite.animations.add('left', [5, 6, 7, 8, 9], 10, true);
         sprite.animations.add('down', [10, 11, 12, 13, 14], 15, true);
         sprite.animations.add('up', [15, 16, 17, 18, 19], 15, true);
-        rng = 1;
-        vel = 500       ;
+        this.rng = 1;
+        vel = 200;//TODO mas baja.
         nBombas = 1;
     }
 
@@ -152,9 +179,13 @@ var jugador = function(id){//Objeto Jugador
                 sprite.frame = 11;
             break;
             case 5:
-                this.ponerBomba();
+                if(mapa[this.getPos()[1]] [this.getPos()[0]] != 4){this.ponerBomba();};
+                
             break;
         }
+    }
+    this.matar = function(){
+        sprite.kill();
     }
     this.colYResetVel = function(){
         sprite.body.velocity.x = 0;
@@ -181,31 +212,166 @@ var jugador = function(id){//Objeto Jugador
     }
     this.ponerBomba = function(){
         mapa[this.getPos()[1]] [this.getPos()[0]] = 4;
-        var nuevaBomba = new bomba(this.rn,this.getPos()[0],this.getPos()[1]);
+        
+        var nuevaBomba = new bomba(this.rng,this.getPos()[0],this.getPos()[1]);
         nuevaBomba.init();
         bombas.push(nuevaBomba);
     }
 }
-var bomba = function(rn,x,y){
-    var rn= rn;
+
+var tiempo;
+var bombasCont =0;
+var bomba = function(rng,x,y){
+    this.rn= rng;
     this.x =x;
     this.y =y;
     this.t;
-    var sprite;
+    this.idBomba = bombasCont;
+    bombasCont++;
+    this.sprite;
     this.init= function(){
-
-        var nuevaBomba = gBombas.create(x*32-4,y*32+8, 'bombas');
+        game.time.events.add(Phaser.Timer.SECOND * 1, this.borrarBomba, this);
+        idBomba = bombasCont;        
+        sprite = gBombas.create(x*32-4,y*32+8, 'bombas');        
         //game.world.bringToTop(gBombas);
-        nuevaBomba.body.immovable = true;
-        nuevaBomba.body.setSize(32, 32, 4,4);
-
-        console.log("Holaa"+x+" - " +y);
+        sprite.body.immovable = true;
+        sprite.body.setSize(32, 32, 4,4);
+        console.log("Holaa"+x+" - " +y+ "id" + idBomba);
         // sprite = game.add.sprite(x*32,y*32+12, 'bombas');
         // game.physics.arcade.enable(sprite);
-        // sprite.body.immovable = true;
-        
-        // game.world.bringToTop(sprite)
+        // sprite.body.immovable = true;        
+        // game.world.bringToTop(sprite);
     }
+    
+
+    this.borrarBomba = function(){
+        gBombas.children[this.idBomba].kill()
+        mapa[this.y] [this.x] = 0;
+
+        //Abajo
+        var contExp =0;
+        
+        var explosiones = new Array();
+        var bArriba = true; //true = camino despejado
+        var bAbajo = true;
+        var bDerecha = true;
+        var bIzquierda = true;
+        var red2;
+        
+        red2=game.add.sprite(x*32,y*32+12,'rojo');//Sprite de explosión en la casilla de la bomba
+        explosiones.push(red2);
+        cArr =0;
+        
+        for(var g = 0; g<jugadores.length; g++){ //Elimina al jugador si está encima de una bomba
+            if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y)){
+                jugadores[g].matar();
+            }
+        }
+
+        for(var i=1; i<=this.rn; i++){ //Expande el fuego hacia los lados comprobando si hay una piedra o un jugador. 
+            
+
+            
+            if(this.y+i>0 && this.y+i<22 && this.x>0 && this.x<17 &&
+                mapa[this.y+i][this.x]!=3 && mapa[this.y+i][this.x]!=2 && bAbajo) //Hacia abajo
+            {
+                
+                red2=game.add.sprite(this.x*32,(this.y+i)*32+12,'rojo'); //Se dibuja la explosión
+                
+                explosiones.push(red2);
+                if(mapaLadrillos[this.y+i][this.x]!=0){ //Se destruye el la drillo
+                    ladrillos.children[(mapaLadrillos[this.y+i][this.x])-1].kill();
+                    mapaLadrillos[this.y+i][this.x]=0;
+                }
+                for(var g = 0; g<jugadores.length; g++){
+                    if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y+i)){
+                        jugadores[g].matar();
+                    }
+                }
+
+            }else{
+                bAbajo = false;
+            }
+
+            if(this.y-i>0 && this.y-i<22 && this.x>0 && this.x<17 &&
+                mapa[this.y-i][this.x]!=3 && mapa[this.y-i][this.x]!=2 && bArriba) //Hacia arriba
+            {
+                red2=game.add.sprite(this.x*32,(this.y-i)*32+12,'rojo'); //Se dibuja la explosión
+                explosiones.push(red2);
+
+                if(mapaLadrillos[this.y-i][this.x]!=0){ //Se destruye el ladrillo
+                    
+                    ladrillos.children[(mapaLadrillos[this.y-i][this.x])-1].kill();
+                    mapaLadrillos[this.y-i][this.x]=0;
+                }
+                for(var g = 0; g<jugadores.length; g++){
+                    if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y-i)){
+                        jugadores[g].matar();
+                    }
+                }
+
+            }else{
+                bArriba = false;
+            }
+
+            if(this.y>0 && this.y<22 && this.x+i>0 && this.x+i<17 &&
+                mapa[this.y][this.x+i]!=3 && mapa[this.y][this.x+i]!=2 && bDerecha) //Hacia derecha
+            {
+                red2=game.add.sprite((this.x+i)*32,this.y*32+12,'rojo'); //Se dibuja la explosión
+                explosiones.push(red2);
+
+                if(mapaLadrillos[this.y][this.x+i]!=0){ //Se destruye el ladrillo
+                    
+                    ladrillos.children[(mapaLadrillos[this.y][this.x+i])-1].kill();
+                    mapaLadrillos[this.y][this.x+i]=0;
+                }
+                for(var g = 0; g<jugadores.length; g++){
+                    if(jugadores[g].getPos()[0] == this.x+i && jugadores[g].getPos()[1]==(this.y)){
+                        jugadores[g].matar();
+                    }
+                }
+
+            }else{
+                bDerecha = false;
+            }
+
+            if(this.y>0 && this.y<22 && this.x-i>0 && this.x-i<17 &&
+                mapa[this.y][this.x-i]!=3 && mapa[this.y][this.x-i]!=2 && bIzquierda) //Hacia derecha
+            {
+                red2=game.add.sprite((this.x-i)*32,this.y*32+12,'rojo'); //Se dibuja la explosión
+                explosiones.push(red2);
+
+                if(mapaLadrillos[this.y][this.x-i]!=0){ //Se destruye el ladrillo
+                    
+                    ladrillos.children[(mapaLadrillos[this.y][this.x-i])-1].kill();
+                    mapaLadrillos[this.y][this.x-i]=0;
+                }
+                for(var g = 0; g<jugadores.length; g++){
+                    if(jugadores[g].getPos()[0] == this.x-i && jugadores[g].getPos()[1]==(this.y)){
+                        jugadores[g].matar();
+                    }
+                }
+
+            }else{
+                bIzquierda = false;
+            }
+
+        }
+
+
+        setTimeout(function(){ //La explosión desaparece al cabo de 1 segundo
+            for(var iable=0; iable < explosiones.length; iable++){
+                explosiones[iable].kill();
+            }
+        }, 1000);
+        
+    }   
+}
+
+function render() {
+    
+    game.debug.text("Time until event: " + game.time.events.duration, 32, 32);
+    
 }
 
 function moverJugadores(){
@@ -216,21 +382,25 @@ function moverJugadores(){
         -D / → =3 -> Jugador a la derecha
         -  = (-1) -> Jugador Quieto
     */
-
     // Controles del jugador 1: ASDW
     if (game.input.keyboard.isDown(Phaser.Keyboard.A)){jugadores[0].action(0);}//Izquierda
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){jugadores[0].action(3);}//Derecha
     else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){jugadores[0].action(1);}//Arriba
     else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {jugadores[0].action(2);}//Abajo
-    else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+    
+    else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}//PonerBomba
     else {jugadores[0].action(-1);}//Quieto
 
     //Controles del jugador 2: flechas
-    if (cursors.left.isDown){jugadores[1].action(0);}//Izquierda
-    else if (cursors.right.isDown){jugadores[1].action(3);}//Derecha
-    else if (cursors.up.isDown){jugadores[1].action(1)}//Arriba
-    else if (cursors.down.isDown){jugadores[1].action(2);}//Abajo
+    if (game.input.keyboard.isDown(Phaser.Keyboard.J)){jugadores[1].action(0);}//Izquierda
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.L)){jugadores[1].action(3);}//Derecha
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.I)){jugadores[1].action(1)}//Arriba
+    else if (game.input.keyboard.isDown(Phaser.Keyboard.K)){jugadores[1].action(2);}//Abajo
+
+    else if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}//PonerBomba
     else{jugadores[1].action(-1);}
+
+    jugadores[7].action(-1);
 }
 function colYResetVel(){
     for(var i = 0; i<jugadores.length;i++){
@@ -242,7 +412,6 @@ function colYResetVel(){
 function destruirLadrillo(jug, ladrillo){
     ladrillo.kill();
 }
-
 
 function create() {
 
@@ -269,15 +438,15 @@ function create() {
         var piedraBorde = piedrasBordes.create(j*anchura, 0, 'piedra');
         piedraBorde.body.immovable = true;
     };
-    var contador =0;
+    var contador =1;
     var altura = 32;
     //Ladrillos y piedras de dentro
     for (var i = 1; i <mapa.length; i++) {
         fila = mapa[i];
         for (var j = 0; j <fila.length ; j++) {
-            if (fila[j] == 0 || fila[j] == 1) {
+            if (fila[j] == 0) {
                 if(Math.random() < 0.75 && fila[j] == 0){
-                    mapaLadrillos[j][i] = contador;
+                    mapaLadrillos[i][j] = contador;
                     contador++;
                     var bloqueLadrillo = ladrillos.create(j*anchura, i*altura+12, 'ladrillo2'); //Los ladrillos se crean aleatoriamente con una probabilidad del 75%
                     game.world.bringToTop(ladrillos);
@@ -286,7 +455,7 @@ function create() {
             }else if(fila[j] == 3){
                 var bloquePiedra = piedras.create(j*anchura,i*altura+12,'piedra2');
                 game.world.bringToTop(piedras);
-                bloquePiedra    .body.immovable = true;
+                bloquePiedra.body.immovable = true;
             };
         };
     };
@@ -295,11 +464,11 @@ function create() {
     //ground.scale.setTo(2, 2);
 
     // Jugadores y sus configuraciones
-    jugadores[0] = new jugador(0);
-    jugadores[1] = new jugador(1);
-
-    jugadores[0].init();
-    jugadores[1].init();
+    for (var i = 0; i <8; i++){
+        jugadores[i] = new jugador(i);
+        jugadores[i].init();
+    }
+    
 
     //Tubos:
     for(var i = 0; i<6 ;i++){
