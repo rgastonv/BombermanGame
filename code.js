@@ -32,8 +32,8 @@ var mapa = [                                                    // Mapa de tiles
 
 var mapaLadrillos = [                                           // Mapa de ladrillos
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],            // 0: Vacío
-                                                                // Otro: índice del bloque de ladrillos
-                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                                                                // Positivos: índice de bloque de ladrillos
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],            // Negativos: índice de bomba
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -61,21 +61,18 @@ var mapaLadrillos = [                                           // Mapa de ladri
 
 
 var cursors;
+var nJugadores = 2;
+var indexBomba = 0;
 
 //Arrays de objetos:
 var jugadores = [];
 var bombas = [];
+bombas[0] = undefined;
 
 //Grupos de Phaser:
 var ladrillos;
 var piedras;
 var piedrasBordes;
-
-//////////////
-var score = 0;
-var scoreText;
-
-
 
 function preload() {
 
@@ -104,6 +101,20 @@ function preload() {
 
 }
 
+var cantarVictoria = function(){
+    for(var i =0; i<jugadores.length;i++){
+        if(jugadores[i] != undefined){
+            var bar = game.add.graphics();
+            bar.beginFill(0x2229b3,0.3);
+            bar.drawRect(0,306,544,100);
+           
+            var style = {font: "bold 32px Arial", fill:"#fff", boundsAlignH: "center", boundsAlignV: "middle"};
+            var texto = game.add.text(0,0, '¡Gana el jugador '+ (i+1) + '!', style)
+            texto.setShadow(-4,3,'rgba(0,0,0,0.8)',1)
+            texto.setTextBounds(0,306,544,100);
+        }
+    }
+}
 
 var jugador = function(id){ // Objeto Jugador
     // id: Identificador del jugador (empezando en 0)
@@ -152,10 +163,10 @@ var jugador = function(id){ // Objeto Jugador
         sprite.animations.add('left', [5, 6, 7, 8, 9], 10, true);
         sprite.animations.add('down', [10, 11, 12, 13, 14], 15, true);
         sprite.animations.add('up', [15, 16, 17, 18, 19], 15, true);
-        this.rng = 1;
+        this.rng = 2;
 
         vel = 200;// TODO más baja
-        nBombas = 1;
+        this.nBombas = 2;
     }
 
     this.action = function (n){
@@ -186,7 +197,7 @@ var jugador = function(id){ // Objeto Jugador
             break;
 
             case 5:
-                if(mapa[this.getPos()[1]] [this.getPos()[0]] != 4){this.ponerBomba();};
+                if(mapa[this.getPos()[1]] [this.getPos()[0]] != 4 && this.nBombas>0){this.ponerBomba();};
                 
             break;
         }
@@ -194,6 +205,9 @@ var jugador = function(id){ // Objeto Jugador
 
     this.matar = function(){ // El personaje muere
         sprite.kill();
+        nJugadores--;
+        if(nJugadores==1){cantarVictoria()};
+        delete jugadores[id];
     }
 
     this.colYResetVel = function(){
@@ -212,24 +226,32 @@ var jugador = function(id){ // Objeto Jugador
     this.getPos= function (){ // Devuelve la posición parametrizada para la matriz
         var pos= [];
         pos[0]= Math.floor((sprite.position.x+19)/32) ;
-        pos[1]= Math.floor(((sprite.position.y-12)+51)/32);
+        pos[1]= Math.floor(((sprite.position.y-12)+51)/32); 
         return pos;
     }
 
     this.ponerBomba = function(){
+        this.nBombas--;
+        indexBomba--;
         mapa[this.getPos()[1]] [this.getPos()[0]] = 4;
+        mapaLadrillos[this.getPos()[1]] [this.getPos()[0]] = indexBomba;
         
-        var nuevaBomba = new bomba(this.rng,this.getPos()[0],this.getPos()[1]);
+        var nuevaBomba = new bomba(this.rng,this.getPos()[0],this.getPos()[1], id, indexBomba);
         nuevaBomba.init();
-        bombas.push(nuevaBomba);
+        for(var k = 0; k <= bombas.length; k++){ //Guardar la bomba en la primera posición vacía del array y si no ampliar este.
+            if (bombas[k] == undefined){
+                bombas[k] = nuevaBomba;
+                break;
+            }
+            //bombas.push(nuevaBomba);
+        }
     }
 }
 
-
-var tiempo; // TODO esta variable no se está usando
 var bombasCont = 0;
 
-var bomba = function(rng,x,y){
+var bomba = function(rng,x,y, idJ, idB){
+    this.idB = idB;
     this.rn = rng;
     this.x = x;
     this.y = y;
@@ -237,9 +259,10 @@ var bomba = function(rng,x,y){
     this.idBomba = bombasCont;
     bombasCont++;
     this.sprite;
+    this.idJ = idJ;
 
     this.init= function(){
-        game.time.events.add(Phaser.Timer.SECOND * 1, this.borrarBomba, this); // TODO modificar número de segundos
+        game.time.events.add(Phaser.Timer.SECOND * 4, this.borrarBomba, this); // TODO modificar número de segundos
         idBomba = bombasCont;        
         sprite = gBombas.create(x*32-4,y*32+8, 'bombas');        
         //game.world.bringToTop(gBombas);
@@ -249,10 +272,28 @@ var bomba = function(rng,x,y){
     
 
     this.borrarBomba = function(){
-        gBombas.children[this.idBomba].kill()
-        mapa[this.y] [this.x] = 0;
+        for(var i=0; i<bombas.length; i++){
+            if(bombas[i] != undefined && bombas[i].idB == this.idB){
+                this.explotaBomba();
+                break;
+            }
+        }
+    }
 
-        var contExp = 0; // TODO esta variable no se está usando
+    this.explotaBomba = function(){
+        gBombas.children[this.idBomba].kill();
+        mapa[this.y] [this.x] = 0;
+        if(jugadores[idJ]!= undefined){jugadores[idJ].nBombas++;}; // Si el jugador no está eliminado, devolverle la bomba
+        
+        for(var i=0; i<bombas.length; i++){ // Borrar la bomba que ha explotado del array bombas para que el array tenga menor longitud
+            if(bombas[i] != undefined && bombas[i].idB == this.idB){
+                delete bombas[i];
+                break;
+            }
+        }
+
+        mapaLadrillos[y][x] = 0; // Desaparece la bomba del mapa
+
         var explosiones = new Array();
         var red2;
 
@@ -264,10 +305,10 @@ var bomba = function(rng,x,y){
         
         red2 = game.add.sprite(x*32,y*32+12,'rojo'); // Sprite de explosión en la casilla de la bomba
         explosiones.push(red2);
-        cArr = 0; // TODO esta variable no se está usando
+       
         
         for(var g = 0; g < jugadores.length; g++){ // Elimina al jugador si su posición coincide con la de una bomba
-            if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y)){
+            if(jugadores[g] != undefined && jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y)){
                 jugadores[g].matar();
             }
         }
@@ -280,13 +321,21 @@ var bomba = function(rng,x,y){
                 red2=game.add.sprite(this.x*32,(this.y+i)*32+12,'rojo'); //Se dibuja la explosión
                 explosiones.push(red2);
 
-                if(mapaLadrillos[this.y+i][this.x]!=0){ // Se destruye el ladrillo
+                if(mapaLadrillos[this.y+i][this.x] > 0){ // Se destruye el ladrillo
                     ladrillos.children[(mapaLadrillos[this.y+i][this.x])-1].kill();
-                    mapaLadrillos[this.y+i][this.x]=0;
+                    mapaLadrillos[this.y+i][this.x] = 0;
+                    bAbajo = false;
+                }else if(mapaLadrillos[this.y+i][this.x] < 0){
+                    for(var z = 0; z < bombas.length; z++){
+                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y+i][this.x]){
+                            bombas[z].borrarBomba();
+                            break;
+                        }
+                    }
                 }
 
                 for(var g = 0; g < jugadores.length; g++){ // Se mata al jugador
-                    if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y+i)){
+                    if(jugadores[g] != undefined && jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y+i)){
                         jugadores[g].matar();
                     }
                 }
@@ -300,13 +349,22 @@ var bomba = function(rng,x,y){
                 red2=game.add.sprite(this.x*32,(this.y-i)*32+12,'rojo');
                 explosiones.push(red2);
 
-                if(mapaLadrillos[this.y-i][this.x]!=0){
+                if(mapaLadrillos[this.y-i][this.x] > 0){
                     ladrillos.children[(mapaLadrillos[this.y-i][this.x])-1].kill();
-                    mapaLadrillos[this.y-i][this.x]=0;
+                    mapaLadrillos[this.y-i][this.x] = 0;
+
+                    bArriba = false;
+                }else if(mapaLadrillos[this.y-i][this.x] < 0){
+                    for(var z = 0; z < bombas.length; z++){
+                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y-i][this.x]){
+                            bombas[z].borrarBomba();
+                            break;
+                        }
+                    }
                 }
 
                 for(var g = 0; g < jugadores.length; g++){
-                    if(jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y-i)){
+                    if(jugadores[g] != undefined && jugadores[g] != undefined && jugadores[g].getPos()[0] == this.x && jugadores[g].getPos()[1]==(this.y-i)){
                         jugadores[g].matar();
                     }
                 }
@@ -320,13 +378,21 @@ var bomba = function(rng,x,y){
                 red2=game.add.sprite((this.x+i)*32,this.y*32+12,'rojo');
                 explosiones.push(red2);
 
-                if(mapaLadrillos[this.y][this.x+i]!=0){
+                if(mapaLadrillos[this.y][this.x+i] > 0){
                     ladrillos.children[(mapaLadrillos[this.y][this.x+i])-1].kill();
                     mapaLadrillos[this.y][this.x+i]=0;
+                    bDerecha = false;
+                }else if(mapaLadrillos[this.y][this.x+i] < 0){
+                    for(var z = 0; z < bombas.length; z++){
+                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y][this.x+i]){
+                            bombas[z].borrarBomba();
+                            break;
+                        }
+                    }
                 }
 
                 for(var g = 0; g < jugadores.length; g++){
-                    if(jugadores[g].getPos()[0] == this.x+i && jugadores[g].getPos()[1]==(this.y)){
+                    if(jugadores[g] != undefined && jugadores[g].getPos()[0] == this.x+i && jugadores[g].getPos()[1]==(this.y)){
                         jugadores[g].matar();
                     }
                 }
@@ -340,13 +406,21 @@ var bomba = function(rng,x,y){
                 red2=game.add.sprite((this.x-i)*32,this.y*32+12,'rojo');
                 explosiones.push(red2);
 
-                if(mapaLadrillos[this.y][this.x-i]!=0){
+                if(mapaLadrillos[this.y][this.x-i] > 0){
                     ladrillos.children[(mapaLadrillos[this.y][this.x-i])-1].kill();
                     mapaLadrillos[this.y][this.x-i]=0;
+                    bIzquierda = false;
+                }else if(mapaLadrillos[this.y][this.x-i] < 0){
+                    for(var z = 0; z < bombas.length; z++){
+                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y][this.x+i]){
+                            bombas[z].borrarBomba();
+                            break;
+                        }
+                    }
                 }
 
                 for(var g = 0; g<jugadores.length; g++){
-                    if(jugadores[g].getPos()[0] == this.x-i && jugadores[g].getPos()[1]==(this.y)){
+                    if(jugadores[g] != undefined && jugadores[g].getPos()[0] == this.x-i && jugadores[g].getPos()[1]==(this.y)){
                         jugadores[g].matar();
                     }
                 }
@@ -364,7 +438,10 @@ var bomba = function(rng,x,y){
         }, 1000);
         
     }   
+    
 }
+
+  
 
 function render() {
     game.debug.text("Time until event: " + game.time.events.duration, 32, 32);
@@ -380,28 +457,39 @@ function moverJugadores(){
         -  = (-1) -> Jugador Quieto
     */
 
-    // Controles del jugador 1: ASDW
-    if (game.input.keyboard.isDown(Phaser.Keyboard.A)){jugadores[0].action(0);} // Izquierda
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){jugadores[0].action(1);} // Arriba
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {jugadores[0].action(2);} // Abajo
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){jugadores[0].action(3);} // Derecha
-    else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);} // PonerBomba
-    else {jugadores[0].action(-1);} // Quieto
+    
 
-    //Controles del jugador 2: flechas
+    if(jugadores[0] != undefined){
+        // Controles del jugador 1: ASDW
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)){jugadores[0].action(0);} // Izquierda
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){jugadores[0].action(1);} // Arriba
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {jugadores[0].action(2);} // Abajo
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){jugadores[0].action(3);} // Derecha
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);} // PonerBomba
+        else {jugadores[0].action(-1);} // Quieto
+    }
+    
+
+
+
+    if(jugadores[1] != undefined){
+        //Controles del jugador 2: flechas
     if (game.input.keyboard.isDown(Phaser.Keyboard.J)){jugadores[1].action(0);} // Izquierda
     else if (game.input.keyboard.isDown(Phaser.Keyboard.I)){jugadores[1].action(1)} // Arriba
     else if (game.input.keyboard.isDown(Phaser.Keyboard.K)){jugadores[1].action(2);} // Abajo
     else if (game.input.keyboard.isDown(Phaser.Keyboard.L)){jugadores[1].action(3);} // Derecha
     else if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);} // PonerBomba
     else{jugadores[1].action(-1);} // Quieto
+    }
+    
 
 }
 
 function colYResetVel(){
     for(var i = 0; i < jugadores.length; i++){
         // Se resetea la velocidad de los jugadores
-        jugadores[i].colYResetVel();
+        if(jugadores[i] !=undefined){jugadores[i].colYResetVel();}
+        
     }
 }
 
@@ -457,7 +545,7 @@ function create() {
 
 
     // Jugadores y sus configuraciones:
-    for (var i = 0; i < 8; i++){
+    for (var i = 0; i < nJugadores; i++){
         jugadores[i] = new jugador(i);
         jugadores[i].init();
     }
@@ -489,8 +577,6 @@ function create() {
     muroInferior.body.setSize(544, 32, 0, 12);
     game.world.bringToTop(gMuroInferior);
 
-    //  The score // TODO sistema de partida
-    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
     // Para los controles por teclado
     cursors = game.input.keyboard.createCursorKeys();
