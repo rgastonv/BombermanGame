@@ -62,17 +62,22 @@ var mapaLadrillos = [                                           // Mapa de ladri
 
 var cursors;
 var nJugadores = 2;
-var indexBomba = 0;
+var indexBomba = 0; // Índice de la bomba en el mapa
+var bombasCont = 0; // Índice de la bomba en el grupo
 
 //Arrays de objetos:
 var jugadores = [];
 var bombas = [];
+var bonificadores = [];
 bombas[0] = undefined;
+bonificadores[0] = undefined;
 
 //Grupos de Phaser:
 var ladrillos;
 var piedras;
 var piedrasBordes;
+var gBonificadores;
+var gBombas;
 
 function preload() {
 
@@ -87,10 +92,11 @@ function preload() {
 
     game.load.spritesheet('bombas','Sprites/Sprites_bombas.png', 40, 40);
 
+    // TODO meter bonificadores
+
     game.load.image('fondo', 'Sprites/fondo.png');
     game.load.image('rojo','Sprites/red.png'); // TODO cambiar por sprite de explosión
     game.load.image('piedra', 'Sprites/Sprites_bloque_piedra.png');
-    //game.load.image('ladrillo', 'Sprites/Sprites_bloque_ladrillo.png');
     game.load.image('piedra2', 'Sprites/Sprites_bloque_piedra2.png');
     game.load.image('ladrillo2', 'Sprites/Sprites_bloque_ladrillo2.png');
 
@@ -98,6 +104,14 @@ function preload() {
     game.load.image('tubo', 'Sprites/tubo.png');
     game.load.image('arbol2', 'Sprites/arbol2.png');
     game.load.image('muroInferior','Sprites/Muro_inferior.png');
+
+    game.load.image('b1', 'Sprites/b1.png');
+    game.load.image('b2', 'Sprites/b2.png');
+    game.load.image('b3', 'Sprites/b3.png');
+    game.load.image('b4', 'Sprites/b4.png');
+    game.load.image('b5', 'Sprites/b5.png');
+    game.load.image('b6', 'Sprites/b6.png');
+
 
 }
 
@@ -122,7 +136,7 @@ var jugador = function(id){ // Objeto Jugador
     var id = id;
     var sprite;
     this.rng; //Rango de sus bombas
-    var vel; // Velocidad
+    this.vel; // Velocidad
     this.nBombas; // Número de bombas
 
 
@@ -163,31 +177,31 @@ var jugador = function(id){ // Objeto Jugador
         sprite.animations.add('left', [5, 6, 7, 8, 9], 10, true);
         sprite.animations.add('down', [10, 11, 12, 13, 14], 15, true);
         sprite.animations.add('up', [15, 16, 17, 18, 19], 15, true);
-        this.rng = 2;
+        this.rng = 1;
 
-        vel = 200;// TODO más baja
-        this.nBombas = 2;
+        this.vel = 100;// TODO más baja
+        this.nBombas = 1;
     }
 
     this.action = function (n){
         switch(n){
             case 0:
-            sprite.body.velocity.x = -vel;
+            sprite.body.velocity.x = -this.vel;
             sprite.animations.play('left');
             break;
 
             case 1:
-            sprite.body.velocity.y = -vel;
+            sprite.body.velocity.y = -this.vel;
             sprite.animations.play('up');
             break;
 
             case 2:
-            sprite.body.velocity.y = vel;
+            sprite.body.velocity.y = this.vel;
             sprite.animations.play('down');
             break;
 
             case 3:
-            sprite.body.velocity.x = vel;
+            sprite.body.velocity.x = this.vel;
             sprite.animations.play('right');
             break;
 
@@ -203,6 +217,42 @@ var jugador = function(id){ // Objeto Jugador
         }
     }
 
+    this.cogerBoni =function(jug, boni){
+        boni.kill();
+        var k = mapa[this.getPos()[1]][this.getPos()[0]];
+        mapa[this.getPos()[1]][this.getPos()[0]] = 0;
+        //1 + Velocidad
+        //2 + bombas
+        //3 + rango
+        //4 - vel
+        //5 - bombas
+        //6 - rn
+
+        switch(k){
+            case -1:
+                this.vel+=75;
+                break;
+            case -2:
+                this.nBombas+=1
+                break;
+            case -3:
+                this.rng +=1;
+                break;
+
+            case -4:
+                 if(this.vel >100){this.vel-=75;};
+                break;
+            case -5:
+                if(this.nBombas >1){this.nBombas-=1;};
+                break;
+            case -6:
+                if(this.rng >1){this.rng-=1;};
+                break;
+            default:
+                break;
+        }
+    }
+
     this.matar = function(){ // El personaje muere
         sprite.kill();
         nJugadores--;
@@ -214,12 +264,15 @@ var jugador = function(id){ // Objeto Jugador
         sprite.body.velocity.x = 0;
         sprite.body.velocity.y = 0;
 
+
         //Colisiones
         game.physics.arcade.collide(sprite, piedrasBordes);
         game.physics.arcade.collide(sprite, gMuroInferior);
         game.physics.arcade.collide(sprite, ladrillos);
         game.physics.arcade.collide(sprite, piedras);
         game.physics.arcade.collide(sprite, gBombas);
+
+        game.physics.arcade.overlap(sprite, gBonificadores, this.cogerBoni, null, this);
         
     }
 
@@ -243,12 +296,9 @@ var jugador = function(id){ // Objeto Jugador
                 bombas[k] = nuevaBomba;
                 break;
             }
-            //bombas.push(nuevaBomba);
         }
     }
 }
-
-var bombasCont = 0;
 
 var bomba = function(rng,x,y, idJ, idB){
     this.idB = idB;
@@ -262,7 +312,7 @@ var bomba = function(rng,x,y, idJ, idB){
     this.idJ = idJ;
 
     this.init= function(){
-        game.time.events.add(Phaser.Timer.SECOND * 4, this.borrarBomba, this); // TODO modificar número de segundos
+        game.time.events.add(Phaser.Timer.SECOND * 2, this.borrarBomba, this); // TODO modificar número de segundos
         idBomba = bombasCont;        
         sprite = gBombas.create(x*32-4,y*32+8, 'bombas');        
         //game.world.bringToTop(gBombas);
@@ -275,6 +325,7 @@ var bomba = function(rng,x,y, idJ, idB){
         for(var i=0; i<bombas.length; i++){
             if(bombas[i] != undefined && bombas[i].idB == this.idB){
                 this.explotaBomba();
+                game.world.bringToTop(gMuroInferior);
                 break;
             }
         }
@@ -322,8 +373,7 @@ var bomba = function(rng,x,y, idJ, idB){
                 explosiones.push(red2);
 
                 if(mapaLadrillos[this.y+i][this.x] > 0){ // Se destruye el ladrillo
-                    ladrillos.children[(mapaLadrillos[this.y+i][this.x])-1].kill();
-                    mapaLadrillos[this.y+i][this.x] = 0;
+                    destruirLadrillo(this.x, this.y+i);
                     bAbajo = false;
                 }else if(mapaLadrillos[this.y+i][this.x] < 0){
                     for(var z = 0; z < bombas.length; z++){
@@ -350,8 +400,7 @@ var bomba = function(rng,x,y, idJ, idB){
                 explosiones.push(red2);
 
                 if(mapaLadrillos[this.y-i][this.x] > 0){
-                    ladrillos.children[(mapaLadrillos[this.y-i][this.x])-1].kill();
-                    mapaLadrillos[this.y-i][this.x] = 0;
+                    destruirLadrillo(this.x, this.y-i);
 
                     bArriba = false;
                 }else if(mapaLadrillos[this.y-i][this.x] < 0){
@@ -379,8 +428,8 @@ var bomba = function(rng,x,y, idJ, idB){
                 explosiones.push(red2);
 
                 if(mapaLadrillos[this.y][this.x+i] > 0){
-                    ladrillos.children[(mapaLadrillos[this.y][this.x+i])-1].kill();
-                    mapaLadrillos[this.y][this.x+i]=0;
+                    destruirLadrillo(this.x+i, this.y);
+
                     bDerecha = false;
                 }else if(mapaLadrillos[this.y][this.x+i] < 0){
                     for(var z = 0; z < bombas.length; z++){
@@ -407,12 +456,12 @@ var bomba = function(rng,x,y, idJ, idB){
                 explosiones.push(red2);
 
                 if(mapaLadrillos[this.y][this.x-i] > 0){
-                    ladrillos.children[(mapaLadrillos[this.y][this.x-i])-1].kill();
-                    mapaLadrillos[this.y][this.x-i]=0;
+                    destruirLadrillo(this.x-i, this.y);
+
                     bIzquierda = false;
                 }else if(mapaLadrillos[this.y][this.x-i] < 0){
                     for(var z = 0; z < bombas.length; z++){
-                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y][this.x+i]){
+                        if(bombas[z] != undefined && bombas[z].idB == mapaLadrillos[this.y][this.x-i]){
                             bombas[z].borrarBomba();
                             break;
                         }
@@ -441,10 +490,45 @@ var bomba = function(rng,x,y, idJ, idB){
     
 }
 
-  
+var bonificador = function(x, y){
+    this.tipo;
+    var sprite;
+    this.init = function(){
+        this.tipo = Math.floor(Math.random()*6+1)*(-1);
 
-function render() {
-    game.debug.text("Time until event: " + game.time.events.duration, 32, 32);
+      
+        switch(this.tipo){
+            case -1:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b1');
+                break;
+            case -2:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b2');
+                break;
+            case -3:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b3');
+                break;
+
+            case -4:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b4');
+                break;
+            case -5:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b5');
+                break;
+            case -6:
+                sprite = gBonificadores.create(x*32,y*32+12, 'b6');
+                break;
+            default:
+                break;
+        }
+        sprite.body.setSize(2, 2, 15,15);
+        
+       //sprite.body.immovable = true;
+
+        mapa[y][x] = this.tipo;
+    }
+    
+
+
 }
 
 function moverJugadores(){
@@ -493,8 +577,23 @@ function colYResetVel(){
     }
 }
 
-function destruirLadrillo(jug, ladrillo){
-    ladrillo.kill();
+function destruirLadrillo(x, y){
+    ladrillos.children[(mapaLadrillos[y][x])-1].kill();
+    mapaLadrillos[y][x] = 0;
+
+    var r = Math.random();
+    if (r > 0.5){
+        var nuevo = new bonificador(x, y);
+        nuevo.init();
+        for(var k = 0; k <= bonificadores.length; k++){
+            if (bonificadores[k] == undefined){
+                bonificadores[k] = nuevo;
+                break;
+            }
+        }
+
+    }
+    
 }
 
 function create() {
@@ -510,7 +609,10 @@ function create() {
     gMuroInferior.enableBody = true;
 
     gBombas = game.add.group();
+    gBonificadores = game.add.group();
+
     gBombas.enableBody = true;
+    gBonificadores.enableBody = true;
 
     var fondo = game.add.sprite(0, 0, 'fondo');
     fondo.sendToBack();
