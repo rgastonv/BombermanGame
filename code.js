@@ -79,6 +79,13 @@ var piedrasBordes;
 var gBonificadores;
 var gBombas;
 
+//Sonidos
+var boom; 
+var powerUp; 
+var winner; 
+var popBomba;
+var morir; 
+
 function preload() {
 
     game.load.spritesheet('prota1', 'Sprites/Sprites_prota_1.png', 38, 64);
@@ -112,20 +119,27 @@ function preload() {
     game.load.image('b5', 'Sprites/b5.png');
     game.load.image('b6', 'Sprites/b6.png');
 
-
+    game.load.audio('BOOM', 'SONIDOS/BOMBA.wav');
+    game.load.audio('POWERUP', 'SONIDOS/POWERUP.wav');
+    game.load.audio('WINNER', 'SONIDOS/WIN.wav');
+    game.load.audio('PONERBOMBA', 'SONIDOS/PONERBOMBA.wav');
+    game.load.audio('MORIR', 'SONIDOS/MORIR.wav');
 }
+
 
 var cantarVictoria = function(){
     for(var i =0; i<jugadores.length;i++){
         if(jugadores[i] != undefined){
             var bar = game.add.graphics();
-            bar.beginFill(0x2229b3,0.3);
+            bar.beginFill(0x2229b3,0.6);
             bar.drawRect(0,306,544,100);
+           
            
             var style = {font: "bold 32px Arial", fill:"#fff", boundsAlignH: "center", boundsAlignV: "middle"};
             var texto = game.add.text(0,0, '¡Gana el jugador '+ (i+1) + '!', style)
             texto.setShadow(-4,3,'rgba(0,0,0,0.8)',1)
             texto.setTextBounds(0,306,544,100);
+            winner.play();
         }
     }
 }
@@ -211,7 +225,7 @@ var jugador = function(id){ // Objeto Jugador
             break;
 
             case 5:
-                if(mapa[this.getPos()[1]] [this.getPos()[0]] != 4 && this.nBombas>0){this.ponerBomba();};
+                if(mapa[this.getPos()[1]] [this.getPos()[0]] != 4 && this.nBombas>0){this.ponerBomba();popBomba.play();};
                 
             break;
         }
@@ -219,6 +233,7 @@ var jugador = function(id){ // Objeto Jugador
 
     this.cogerBoni =function(jug, boni){
         boni.kill();
+        powerUp.play(); 
         var k = mapa[this.getPos()[1]][this.getPos()[0]];
         mapa[this.getPos()[1]][this.getPos()[0]] = 0;
         //1 + Velocidad
@@ -254,10 +269,12 @@ var jugador = function(id){ // Objeto Jugador
     }
 
     this.matar = function(){ // El personaje muere
+        morir.play(); 
         sprite.kill();
         nJugadores--;
-        if(nJugadores==1){cantarVictoria()};
+        
         delete jugadores[id];
+        if(nJugadores==1){cantarVictoria()};
     }
 
     this.colYResetVel = function(){
@@ -341,6 +358,7 @@ var bomba = function(rng,x,y, idJ, idB){
                 delete bombas[i];
                 break;
             }
+        
         }
 
         mapaLadrillos[y][x] = 0; // Desaparece la bomba del mapa
@@ -479,7 +497,8 @@ var bomba = function(rng,x,y, idJ, idB){
 
         }
 
-
+        boom.play(); 
+        
         setTimeout(function(){ // La explosión desaparece al cabo de 1 segundo
             for(var iable = 0; iable < explosiones.length; iable++){
                 explosiones[iable].kill();
@@ -520,7 +539,7 @@ var bonificador = function(x, y){
             default:
                 break;
         }
-        sprite.body.setSize(2, 2, 15,15);
+        sprite.body.setSize(2, 10, 15,11);
         
        //sprite.body.immovable = true;
 
@@ -597,6 +616,15 @@ function destruirLadrillo(x, y){
 }
 
 function create() {
+ 
+    boom = game.add.audio('BOOM');
+    boom.volume= 0.08;
+
+    powerUp = game.add.audio('POWERUP');
+    winner = game.add.audio('WINNER');
+    popBomba = game.add.audio('PONERBOMBA');
+    morir = game.add.audio('MORIR');
+
 
     ladrillos = game.add.group();
     piedras = game.add.group();
@@ -687,4 +715,5 @@ function create() {
 function update() {
     colYResetVel();
     moverJugadores();
+     
 }
