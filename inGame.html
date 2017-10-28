@@ -1,36 +1,43 @@
 <!doctype html> 
 <html lang="en"> 
-<head> 
-	<meta charset="UTF-8" />
-    <title>BOMBERMAN GAME</title>
-	<script type="text/javascript" src="phaser.js"></script>
-   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <head> 
+  	<title>BOMBERMAN GAME</title>
 
-	
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<link rel="stylesheet" type="text/css" href="estilo.css">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  
-</head>
-<body background="https://trello-attachments.s3.amazonaws.com/59c2cd2977270b196f1e68a3/59cb7f5e7aa582eee59ad238/cfdbb1b2b12080722154ec5be9ad9dd5/Super-Bomberman-R-1.jpg">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <link rel="stylesheet" type="text/css" href="estiloGame.css">
+    <link rel="icon" href="img/Bomberman-icon.png">
 
-<script type="text/javascript" src="code.js"></script>
+  	<script type="text/javascript" src="phaser.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <div id="contenedor">
-        <div id="cajaTitulo">
-            <h1 id="textoTituloCaja">BOMBERMAN</h1> 
-        </div>
-        <div id="cajaGame">
-        
-        </div>
-        <div id="cajaBotones">
-              <a href="index.html" class="myButtonGame">HOME</a>
-             <a href="inGame.html" class="myButtonGame">RESTART</a>
-        </div>
-    </div>
-    <audio src= "SONIDOS/COUNTDOWN.wav" autoplay="true"></audio>
-</body>
+    <script type="text/javascript" src="code.js"></script>
+    <script type="text/javascript" src="bonificador.js"></script>
+    <script type="text/javascript" src="jugador.js"></script>
+    <script type="text/javascript" src="bomba.js"></script>
+  </head>
+
+  <body background="img/Super-Bomberman-R-1.jpg">
+      <div id="contenedor">
+          <div id="cajaTitulo">
+              <h1 id="textoTituloCaja">BOMBERMAN</h1> 
+          </div>
+
+          <div id="cajaGame"></div>
+
+          <div id="cajaBotones">
+              <a href="index.html" class="myButtonGame">Home</a>
+              <a href="inGame.html" class="myButtonGame">Restart</a>
+          </div>
+          
+      </div>
+
+      <audio id="countdown" src= "SONIDOS/COUNTDOWN.wav" autoplay="true"></audio>
+      <audio id="musica" src="SONIDOS/MUSICA_FONDO_bucle.mp3" loop="true"></audio>
+      
+  </body>
 </html>
