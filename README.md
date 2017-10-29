@@ -65,6 +65,10 @@
     </li>
     <li><b>Audios:</b>
       <ul>
+        <li><a href="https://www.youtube.com/watch?v=2oGRwN4-jUc&feature=youtu.be">Title music</a> de Jun Chikuma (© Hudson Soft 1993).
+        </li>
+        <li><a href="https://www.youtube.com/watch?v=ewkH4r6eHCQ&feature=youtu.be">Battle music extended</a> de Jun Chikuma (© Hudson Soft 1993).
+        </li>
         <li><a href="https://freesound.org/people/sharesynth/sounds/344506/">Bomba</a> de <a href="https://freesound.org/people/sharesynth/">sharesynth</a> en freesound.org.
         </li>
         <li><a href="https://freesound.org/people/plasterbrain/sounds/394466/">Muerte</a> de <a href="https://freesound.org/people/plasterbrain/">plasterbrain</a> en freesound.org.
