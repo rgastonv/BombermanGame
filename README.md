@@ -103,6 +103,12 @@
   ![Juego](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/inGame_img.png)
 
   <br>
+  
+  <ul><p>Cuando solo queda un personaje vivo (todos los demás han sido pillados por una explosión), este resulta ganador. Se muestra un mensaje por pantalla, la música para y los controles dejan de responder. Ahora los jugadores pueden jugar otra vez, o volver a la pantalla de inicio.</p></ul>
+  
+  ![Fin de partida](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/end_img.png)
+
+  <br>
 
   <ul><p>La pantalla de records presenta una tabla de las puntuaciones más altas (en número de partidas ganadas) ordenadas en una tabla. Ya que por lo pronto el juego solo funciona en local y no se recoge el nombre de los jugadores, la información que se muestra es un <i>placeholder</i> a sustituir en el futuro. Se muestran en una tabla generada con bootstrap.</p></ul>
   
