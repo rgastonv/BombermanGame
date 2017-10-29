@@ -154,6 +154,19 @@ function preload() {
     game.load.image('b5', 'Sprites/b5.png');
     game.load.image('b6', 'Sprites/b6.png');
 
+    game.load.image('FC', 'Sprites/FC.png');
+    game.load.image('FT', 'Sprites/FT.png');
+    game.load.image('FR', 'Sprites/FR.png');
+    game.load.image('FB', 'Sprites/FB.png');
+    game.load.image('FL', 'Sprites/FL.png');
+
+    game.load.image('FTF', 'Sprites/FTF.png');
+    game.load.image('FRF', 'Sprites/FRF.png');
+    game.load.image('FBF', 'Sprites/FBF.png');
+    game.load.image('FLF', 'Sprites/FLF.png');
+
+
+
     game.load.audio('BOOM', 'SONIDOS/BOMBA.wav');
     game.load.audio('POWERUP', 'SONIDOS/POWERUP.wav');
     game.load.audio('WINNER', 'SONIDOS/WIN.wav');
