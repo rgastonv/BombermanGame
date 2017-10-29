@@ -11,37 +11,46 @@
     	<link rel="stylesheet" type="text/css" href="estilo.css">
         <link rel="stylesheet" type="text/css" href="estiloIndex.css">
         <link rel="icon" href="img/Bomberman-icon.png">
+        <script>
+            var raton = new Audio();
+            raton.src = "SONIDOS/CLICK.wav";
+            function loadGame(){window.location.href = "inGame.html";}
+            function loadRecords(){window.location.href = "Records.html";}
+            function loadTuto(){window.location.href = "tutorial.html";}
+            function loadAbout(){window.location.href = "about.html";}
+
+        </script>
     </head>
     <body background="img/Super-Bomberman-R-1.jpg">
+        
 
         <h1 id="titulo">BOMBERMAN</h1>    
              
     	<div  id="tablaBotones">
             <div  >
                 <div >
-                    <a href="inGame.html" class="myButton">Play</a>
+                    <a  href="JavaScript:setTimeout(loadGame,650)" onmousedown="raton.play()" class="myButton"> Play</a>
                 </div>       
             </div>
             <div>
                 <div >
-                    <a href="Records.html" class="myButton">Records</a>
+                    <a href="JavaScript:setTimeout(loadRecords,650)" onmousedown="raton.play()" class="myButton">Records</a>
                 </div>
             </div>
             <div>
                 <div >
-                    <a href="tutorial.html" class="myButton">How to play</a>
+                    <a href="JavaScript:setTimeout(loadTuto,650)" onmousedown="raton.play()" class="myButton">How to play</a>
                 </div>
             </div>
             <div >
                 <div >
-                    <a href="about.html" class="myButton">About</a>
+                    <a href="JavaScript:setTimeout(loadAbout,650)" onmousedown="raton.play()" class="myButton">About</a>
                 </div>
             </div>
         
         
         </div>
-
-        <audio src= "SONIDOS/PANTALLA_INICIO.mp3" autoplay="true"></audio>
+        <!-- <audio src= "SONIDOS/PANTALLA_INICIO.mp3" autoplay="true"></audio>-->
         
     </body>
 </html>

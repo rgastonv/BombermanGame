@@ -12,6 +12,12 @@
         <link rel="stylesheet" type="text/css" href="estiloTutorial.css">
         <link rel="icon" href="img/Bomberman-icon.png">
         
+        <script>
+            
+            var raton = new Audio();
+            raton.src = "SONIDOS/CLICK.wav";
+            function loadHome(){window.location.href = "index.html";}              
+        </script>
         
     </head>
     <body background="img/Super-Bomberman-R-1.jpg">
@@ -79,7 +85,7 @@
                 
                 <div class="row">
                     <div class="col-xs-12" >
-                        <p align="right"><a href="index.html" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>
+                        <p align="right"><a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>                        
                     </div>
                     
                 </div>

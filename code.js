@@ -1,4 +1,3 @@
-
 var game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
 
 
@@ -169,7 +168,7 @@ function create() {
 
     setTimeout(function(){
         game.paused = false;
-        document.getElementById("musica").volume = 0.4;
+        document.getElementById("musica").volume = 0.2;
         document.getElementById("musica").play();
     }, 2250);
 }
@@ -267,7 +266,7 @@ var partida = function(){
     document.getElementById("countdown").volume = 0.5;
         
     boom = game.add.audio('BOOM');
-    boom.volume = 0.08;
+    boom.volume = 0.15;
 
     powerUp = game.add.audio('POWERUP');
     winner = game.add.audio('WINNER');
@@ -408,4 +407,3 @@ var partida = function(){
     cursors = game.input.keyboard.createCursorKeys();
     }
 }
-

@@ -49,7 +49,7 @@ var jugador = function(id){
         sprite.animations.add('up', [15, 16, 17, 18, 19], 15, true);
         this.rng = 1;
 
-        this.vel = 100;
+        this.vel = 75;
         this.nBombas = 1;
     }
 
@@ -115,7 +115,7 @@ var jugador = function(id){
                 break;
 
             case -4:
-                 if(this.vel > 100){this.vel -= 60;};
+                 if(this.vel > 104){this.vel -= 30;};
                 break;
             case -5:
                 if(this.nBombas > 1){this.nBombas -= 1;};
@@ -184,11 +184,11 @@ var jugador = function(id){
 
 function moverJugadores(){
      /*
-        -A / ← =0 -> Jugador a la izquierda
-        -W / ↑ =1 -> Jugador hacia arriba
-        -S / ↓ =2 -> Jugador hacia abajo
-        -D / → =3 -> Jugador a la derecha
-        -Q = 5 -> Colocar bomba
+        -A / J =0 -> Jugador a la izquierda
+        -W / I =1 -> Jugador hacia arriba
+        -S / K =2 -> Jugador hacia abajo
+        -D / L =3 -> Jugador a la derecha
+        -Q / U = 5 -> Colocar bomba
         -  = (-1) -> Jugador Quieto
     */
 

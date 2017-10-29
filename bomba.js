@@ -14,7 +14,7 @@ var bomba = function(rng, x, y, idJ, idB){
     this.idJ = idJ;
 
     this.init= function(){
-        game.time.events.add(Phaser.Timer.SECOND * 2, this.borrarBomba, this);
+        game.time.events.add(Phaser.Timer.SECOND * 3, this.borrarBomba, this);
         idBomba = bombasCont;        
         sprite = gBombas.create(x*32-4, y*32+8, 'bombas');
         sprite.body.immovable = true;
