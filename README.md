@@ -119,7 +119,7 @@
   <ul><p>La pantalla about recoge nuestros nombres y correos de la universidad. Se muestran en una tabla generada con bootstrap.
   </p></ul>
   
-  ![Sobre nosotros](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/about_img.png)
+  ![Sobre nosotros](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/aboutus_img.png)
 
 
   <br>
