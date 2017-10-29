@@ -73,13 +73,8 @@ var bomba = function(rng, x, y, idJ, idB){
             if(y+i>0 && y+i<22 && x>0 && x<17 && // Condiciones para que la comprobación no se salga del array
                 mapa[y+i][x]!=3 && mapa[y+i][x]!=2 && bAbajo && mapa[y+i][x] !=-13)
             {
-                if(this.rn == i){
-                    red2=game.add.sprite(x*32,(y+i)*32+12,'FBF'); //Se dibuja la explosión final.
-                }else{
-                    red2=game.add.sprite(x*32,(y+i)*32+12,'FB'); //Se dibuja la explosión intermedia.
-                    
-                }                
-
+                             
+                red2=game.add.sprite(x*32,(y+i)*32+12,'FB'); //Se dibuja la explosión intermedia.
                 explosiones.push(red2);
 
                 if(mapaBonificadores[y+i][x] >0){
@@ -112,13 +107,8 @@ var bomba = function(rng, x, y, idJ, idB){
                 mapa[y-i][x]!=3 && mapa[y-i][x]!=2 && bArriba && mapa[y-i][x] !=-13)
             {
 
-                if(this.rn == i){
-                    red2=game.add.sprite(x*32,(y-i)*32+12,'FTF'); 
-                }else{
-                    red2=game.add.sprite(x*32,(y-i)*32+12,'FT'); 
-                    
-                }
-
+                
+                red2=game.add.sprite(x*32,(y-i)*32+12,'FT'); 
                 explosiones.push(red2);
                 if(mapaBonificadores[y-i][x] >0){
                     destruirBoni(x,y-i);
@@ -150,13 +140,8 @@ var bomba = function(rng, x, y, idJ, idB){
             if(y>0 && y<22 && x+i>0 && x+i<17 &&
                 mapa[y][x+i]!=3 && mapa[y][x+i]!=2 && bDerecha  && mapa[y][x+i] !=-13)
             {
-                if(this.rn == i){
-                    red2=game.add.sprite((x+i)*32,y*32+12,'FRF');
-                }else{
-                    red2=game.add.sprite((x+i)*32,y*32+12,'FR'); 
-                    
-                }
-
+                
+                red2=game.add.sprite((x+i)*32,y*32+12,'FR'); 
                 explosiones.push(red2);
                 
                 if(mapaBonificadores[y][x+i] >0){
@@ -188,12 +173,8 @@ var bomba = function(rng, x, y, idJ, idB){
             if(y>0 && y<22 && x-i>0 && x-i<17 &&
                 mapa[y][x-i]!=3 && mapa[y][x-i]!=2 && bIzquierda && mapa[y][x-i] !=-13)
             {
-                if(this.rn == i){
-                    red2=game.add.sprite((x-i)*32,y*32+12,'FLF');
-                }else{
-                    red2=game.add.sprite((x-i)*32,y*32+12,'FL'); 
-                    
-                }
+                
+                red2=game.add.sprite((x-i)*32,y*32+12,'FL'); 
                 explosiones.push(red2);
 
                 if(mapaBonificadores[y][x-i] >0){

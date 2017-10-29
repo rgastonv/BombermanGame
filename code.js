@@ -160,10 +160,7 @@ function preload() {
     game.load.image('FB', 'Sprites/FB.png');
     game.load.image('FL', 'Sprites/FL.png');
 
-    game.load.image('FTF', 'Sprites/FTF.png');
-    game.load.image('FRF', 'Sprites/FRF.png');
-    game.load.image('FBF', 'Sprites/FBF.png');
-    game.load.image('FLF', 'Sprites/FLF.png');
+
 
 
 
