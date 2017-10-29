@@ -1,6 +1,6 @@
 //Array:
 var jugadores = [];
-
+var tecla;
 
 var jugador = function(id){
     // id: Identificador del jugador (empezando en 0)
@@ -194,20 +194,48 @@ function moverJugadores(){
 
     if(jugadores[0] != undefined){
         // Controles del jugador 1: ASDW
-        if (game.input.keyboard.isDown(Phaser.Keyboard.A)){jugadores[0].action(0);} // Izquierda
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){jugadores[0].action(1);} // Arriba
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {jugadores[0].action(2);} // Abajo
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){jugadores[0].action(3);} // Derecha
+
+        teclaQ = game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.add
+       
+
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)){
+            jugadores[0].action(0);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+        } // Izquierda
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){
+            jugadores[0].action(1);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+        } // Arriba
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            jugadores[0].action(2);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+        } // Abajo
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
+            jugadores[0].action(3);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+        } // Derecha
         else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);} // PonerBomba
         else {jugadores[0].action(-1);} // Quieto
     }
     
     if(jugadores[1] != undefined){
         //Controles del jugador 2: flechas
-        if (game.input.keyboard.isDown(Phaser.Keyboard.J)){jugadores[1].action(0);} // Izquierda
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.I)){jugadores[1].action(1)} // Arriba
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.K)){jugadores[1].action(2);} // Abajo
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.L)){jugadores[1].action(3);} // Derecha
+        if (game.input.keyboard.isDown(Phaser.Keyboard.J)){
+            jugadores[1].action(0);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
+        } // Izquierda
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.I)){
+            jugadores[1].action(1)
+            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
+        } // Arriba
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.K)){
+            jugadores[1].action(2);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
+        } // Abajo
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.L)){
+            jugadores[1].action(3);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
+        } // Derecha
         else if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);} // PonerBomba
         else{jugadores[1].action(-1);} // Quieto
     }
