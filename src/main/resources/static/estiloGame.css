@@ -1,0 +1,90 @@
+#contenedor{
+    
+    margin: 20px;
+    border: 20px solid #FDFEFE;
+    border-color:cornflowerblue;
+    border-radius:35px;
+    background-color: cornflowerblue;
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); 
+    height: 100%;
+    text-align: center;
+}
+
+/*#cajaGame{
+   
+}*/
+
+#cajaBotones{
+    display: inline-block;
+    margin: auto;
+}
+
+#cajaTitulo{
+    color: rgb(8, 4, 230);
+	font-size: 60px;
+	font-family: light-pixel;
+	font-weight: bold;
+	
+	margin: 20px;
+    border: 2px solid #FDFEFE;
+    border-radius:35px;
+	background-color:white;
+}
+
+#textoTituloCaja{
+    color: rgb(8, 4, 230);
+	font-size: 60px;
+	font-family: light-pixel;
+	font-weight: bold;
+}
+
+
+.myButtonGame {
+	-moz-box-shadow:inset 0px 0px 17px 4px #f5978e;
+	-webkit-box-shadow:inset 0px 0px 17px 4px #f5978e;
+	box-shadow:inset 0px 0px 17px 4px #f5978e;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f24537), color-stop(1, #c62d1f));
+	background:-moz-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-webkit-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-o-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:-ms-linear-gradient(top, #f24537 5%, #c62d1f 100%);
+	background:linear-gradient(to bottom, #f24537 5%, #c62d1f 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24537', endColorstr='#c62d1f',GradientType=0);
+	background-color:#f24537;
+	-moz-border-radius:14px;
+	-webkit-border-radius:14px;
+	border-radius:14px;
+	border:2px solid #d02718;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:light-pixel; 
+	font-size:28px;
+	font-weight:bold;
+	padding-top: 10px;
+    padding-bottom: 10px;
+    width: 200px;;
+	text-decoration:none;
+	text-shadow:2px 3px 0px #810e05;
+    text-align: center;
+    margin: 5px;
+}
+
+.myButtonGame:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24537));
+	background:-moz-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-webkit-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-o-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:-ms-linear-gradient(top, #c62d1f 5%, #f24537 100%);
+	background:linear-gradient(to bottom, #c62d1f 5%, #f24537 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24537',GradientType=0);
+	background-color:#c62d1f;
+}
+
+.myButtonGame:active {
+	position:relative;
+	top:1px;
+}

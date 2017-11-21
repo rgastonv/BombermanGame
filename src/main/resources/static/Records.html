@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="records.js"></script>
+
+    	<title>Records</title>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+    	<link rel="stylesheet" type="text/css" href="estilo.css">
+        <link rel="stylesheet" type="text/css" href="estiloRecords.css">
+        <link rel="icon" href="img/Bomberman-icon.png">
+        
+        <script>
+            
+            var raton = new Audio();
+            raton.src = "SONIDOS/CLICK.wav";
+            function loadHome(){window.location.href = "index.html";}              
+        </script>
+
+    </head>
+    <body background="img/Super-Bomberman-R-1.jpg">
+
+        <h1 id="titulo">Records</h1>
+
+        <div id="tablaBotones">
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-xs-6" style="background-color:pink">
+                        <h1>Nombre</h1>
+                    </div>
+                    <div class="col-xs-6" style="background-color:pink;">
+                        <h1>Partidas Ganadas</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6" style="background-color:aliceblue;">
+                        <p id="nombre0"> pene</p>
+                    </div>
+                    <div class="col-xs-6" style="background-color:aliceblue;">
+                        <p id="pun0"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6" style="background-color:lavender;">
+                        <p id="nombre1"></p>
+                    </div>
+                    <div class="col-xs-6" style="background-color:lavender;">
+                        <p id="pun1"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6" style="background-color:aliceblue;">
+                        <p id="nombre2"></p>
+                    </div>
+                    <div class="col-xs-6" style="background-color:aliceblue;">
+                        <p id="pun2"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6" style="background-color:lavender;">
+                        <p id="nombre3"></p>
+                    </div>
+                    <div class="col-xs-6" style="background-color:lavender;">
+                        <p id="pun3"></p>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-xs-12" >
+                            <p align="right"><a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

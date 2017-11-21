@@ -1,0 +1,55 @@
+<!doctype html> 
+<html lang="en"> 
+  <head> 
+  	<title>BOMBERMAN GAME</title>
+
+
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <link rel="stylesheet" type="text/css" href="estiloGame.css">
+    <link rel="icon" href="img/Bomberman-icon.png">
+
+  	<script type="text/javascript" src="phaser.min.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="code.js"></script>
+    <script type="text/javascript" src="bonificador.js"></script>
+    <script type="text/javascript" src="jugador.js"></script>
+    <script type="text/javascript" src="bomba.js"></script>
+
+    <script>
+      
+      var raton = new Audio();
+      raton.src = "SONIDOS/CLICK.wav";
+      function loadHome(){window.location.href = "index.html";}
+      function loadRestart(){window.location.href = "inGame.html";}
+    
+    </script>
+
+  </head>
+
+  <body background="img/Super-Bomberman-R-1.jpg">
+      <div id="contenedor">
+          <div id="cajaTitulo">
+              <h1 id="textoTituloCaja">BOMBERMAN</h1> 
+          </div>
+
+          <div id="cajaGame"></div>
+
+          <div id="cajaBotones">
+              <a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()"  class="myButtonGame">Home</a>
+              <a href="JavaScript:setTimeout(loadRestart,650)" onmousedown="raton.play()"  class="myButtonGame">Restart</a>
+          </div>
+          
+      </div>
+
+      <audio id="countdown" src= "SONIDOS/COUNTDOWN.wav" autoplay="true"></audio>
+      <audio id="musica" src="SONIDOS/MUSICA_FONDO_bucle.mp3" loop="true"></audio>
+      
+  </body>
+</html>
