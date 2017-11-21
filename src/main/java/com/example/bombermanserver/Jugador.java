@@ -21,8 +21,8 @@ public class Jugador {
 		return pun;
 	}
 	
-	public void setPun(int pun) {
-		this.pun = pun;
+	public void setPun() {
+		this.pun = this.pun + 1;
 	}
 
 	public void setNombre(String nombre) {
