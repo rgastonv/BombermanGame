@@ -2,8 +2,9 @@ package com.example.bombermanserver;
 
 public class Jugador {
 	
-	private int pun;
+	
 	private String nombre;
+        private int pun;
 	
 	public Jugador() {
 	}
