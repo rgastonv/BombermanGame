@@ -4,6 +4,7 @@ var tecla;
 
 var jugador = function(id){
     // id: Identificador del jugador (empezando en 0)
+    var nombre;
     var id = id;
     var sprite;
     this.rng; //Rango de sus bombas
@@ -13,27 +14,35 @@ var jugador = function(id){
     this.init = function(){
         switch(id){
             case 0:
+                nombre = "Juana";
                 sprite = game.add.sprite(30, 12, 'prota1');
                 break;
             case 1:
+                nombre = "Calpurnia";
                 sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
                 break;
             case 2:
+                nombre = "Handrés";
                 sprite = game.add.sprite(30, 268, 'prota3');
                 break;
             case 3:
+                nombre = "Elena";
                 sprite = game.add.sprite(game.world.width - 68, 268, 'prota4');
                 break;
             case 4:
+                nombre = "Felipe";
                 sprite = game.add.sprite(30, 396, 'prota5');
                 break;
             case 5:
+                nombre = "Jesucristo";
                 sprite = game.add.sprite(game.world.width - 68, 396, 'prota6');
                 break;
             case 6:
+                nombre = "Obama";
                 sprite = game.add.sprite(30, 620, 'prota7');
                 break;
             case 7:
+                nombre = "M. Rajoy";
                 sprite = game.add.sprite(game.world.width - 68, 620, 'prota8');
                 break;
         }
@@ -51,6 +60,10 @@ var jugador = function(id){
 
         this.vel = 75;
         this.nBombas = 1;
+    }
+
+    this.getNombre = function(){
+        return nombre;
     }
 
     this.action = function (n){

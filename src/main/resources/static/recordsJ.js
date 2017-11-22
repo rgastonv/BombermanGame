@@ -1,3 +1,4 @@
+
 window.onload = function (){
     document.getElementById("nombre0").innerHTML = "Raquel";
     document.getElementById("pun0").innerHTML = "8";
@@ -11,16 +12,37 @@ window.onload = function (){
     document.getElementById("nombre3").innerHTML = "Andrés";
     document.getElementById("pun3").innerHTML = "1";
     
+        
+    $.ajax({
+        type: 'GET',
+        url:"http://localhost:8080/records",
+        headers: {
+            "Content-type": "application/json"
+        }
+    }).done(function(dato) {
+        document.getElementById("nombre0").innerHTML = dato[0].nombre;
+        document.getElementById("pun0").innerHTML = dato[0].pun;
+
+        document.getElementById("nombre1").innerHTML = dato[1].nombre;
+        document.getElementById("pun1").innerHTML = dato[1].pun;
+        
+        document.getElementById("nombre2").innerHTML = dato[2].nombre;
+        document.getElementById("pun2").innerHTML = dato[2].pun;
+
+        document.getElementById("nombre3").innerHTML = dato[3].nombre;
+        document.getElementById("pun3").innerHTML = dato[3].pun;
+    });
+    
 }
 var rJugadores = [];
 
-var myRequest = new XMLHttpRequest();
+/*var myRequest = new XMLHttpRequest();
 myRequest.open('GET','listaPun.JSON');
 myRequest.onload = function(){
     var myData = JSON.parse(myRequest.responseText);
     console.log(myData[1].name);
 }
-myRequest.send();
+myRequest.send();*/
 
 
 
@@ -36,6 +58,7 @@ var puntuacionJug = function( p , n){
     }
     
 }
+
 /* //DESCARGA EL JSON AL EJECUTAR
 function saveText(text, filename){
     var a = document.createElement('a');
@@ -51,17 +74,3 @@ for(var i =0; i<1;i++){
 saveText(myJSON,"puntuaciones.json");*/
 
 
-
-/*
-
-$.ajax({
-    type: 'GET',
-    url:"http://localhost:8080/records",
-    contentType: "application/json",
-}).done(function(data) {
-    $("nombre1").append(
-        "<p>"+data[0].nombre+"</p>");
-});
-   
-
-*/

@@ -23,10 +23,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BomberserverApplication {
 
     public static void main(String[] args) throws IOException {
+    /*
+        Gson gson = new Gson();
+        
 
         
-        Gson gson = new Gson();
-
         //LECTURA DEL ARCHIVO        
         File myFile2 = new File("example2.json");
         FileInputStream fIn = new FileInputStream(myFile2);
@@ -38,7 +39,8 @@ public class BomberserverApplication {
             aBuffer += aDataRow ;
         }
         myReader.close();        
-        System.out.println(aBuffer);
+        //System.out.println(aBuffer);
+        
         
         //Lectura del Json
         Lista listaJugT = gson.fromJson(aBuffer, Lista.class);        
@@ -66,6 +68,7 @@ public class BomberserverApplication {
         
         System.out.println(listaJugT.getRecord(0).getNombre()+ "HHHHHHHHHHHHH");
         
+        */
         
         SpringApplication app = new SpringApplication(BomberserverApplication.class);
         Properties properties = new Properties();

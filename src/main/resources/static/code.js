@@ -224,11 +224,34 @@ var cantarVictoria = function(){
             bar.drawRect(0,150,544,100);
            
             var style = {font: "bold 32px Arial", fill:"#fff", boundsAlignH: "center", boundsAlignV: "middle"};
-            var texto = game.add.text(0,0, '¡Gana el jugador '+ (i+1) + '!', style);
+            var texto = game.add.text(0,0, '¡Gana '+ jugadores[i].getNombre() + '!', style);
             texto.setShadow(-4,3, 'rgba(0,0,0,0.8)', 1);
             texto.setTextBounds(0,150,544,100);
             document.getElementById("musica").pause();
             winner.play();
+
+            //POST
+            $.ajax({
+                type: 'POST',
+                url:"http://localhost:8080/holi",
+                data: jugadores[i].getNombre(),
+                headers:{
+                    "Content-Type": "application/json",
+                }
+            })/*.done(function(dato) {
+                document.getElementById("nombre0").innerHTML = dato[0].nombre;
+                document.getElementById("pun0").innerHTML = dato[0].pun;
+        
+                document.getElementById("nombre1").innerHTML = dato[1].nombre;
+                document.getElementById("pun1").innerHTML = dato[1].pun;
+                
+                document.getElementById("nombre2").innerHTML = dato[2].nombre;
+                document.getElementById("pun2").innerHTML = dato[2].pun;
+        
+                document.getElementById("nombre3").innerHTML = dato[3].nombre;
+                document.getElementById("pun3").innerHTML = dato[3].pun;
+            })*/;
+
         }
     }
    
