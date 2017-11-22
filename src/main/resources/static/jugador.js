@@ -14,15 +14,15 @@ var jugador = function(id){
     this.init = function(){
         switch(id){
             case 0:
-                nombre = "Juana";
+                nombre = nombre1;
                 sprite = game.add.sprite(30, 12, 'prota1');
                 break;
             case 1:
-                nombre = "Calpurnia";
+                nombre = nombre2;
                 sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
                 break;
             case 2:
-                nombre = "Handrés";
+                nombre = "Andrés";
                 sprite = game.add.sprite(30, 268, 'prota3');
                 break;
             case 3:
@@ -34,7 +34,7 @@ var jugador = function(id){
                 sprite = game.add.sprite(30, 396, 'prota5');
                 break;
             case 5:
-                nombre = "Jesucristo";
+                nombre = "Raquel";
                 sprite = game.add.sprite(game.world.width - 68, 396, 'prota6');
                 break;
             case 6:

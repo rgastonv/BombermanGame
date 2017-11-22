@@ -21,8 +21,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BomberserverApplication {
+    
 
     public static void main(String[] args) throws IOException {
+        
     /*
         Gson gson = new Gson();
         

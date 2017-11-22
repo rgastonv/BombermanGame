@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        
+
+        <title>BOMBERMAN GAME</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <link rel="stylesheet" type="text/css" href="estilo.css">
+        <link rel="stylesheet" type="text/css" href="estiloLogin.css">
+        <link rel="icon" href="img/Bomberman-icon.png">
+
+        <script>
+            var raton = new Audio();
+            raton.src = "SONIDOS/CLICK.wav";
+            function loadHome(){window.location.href = "index.html";}  
+            
+            
+
+            function loadGame(){
+
+                var n1 = document.getElementById("nombre1").value;
+                var n2 = document.getElementById("nombre2").value;
+                if (n1 == null || n1 == "") {n1 = "anónimo";}
+                if (n2 == null || n2 == "") {n2 = "anónimo";} 
+
+                var oNombres = function(){
+                    var nombres =[2];
+                    this.setN1 = function(n){
+                        nombres[0] = n;
+                    }
+                    this.setN2 = function(n){
+                        nombres[1] = n;
+                    }
+                }
+                var nms = new oNombres();
+                nms.setN1(n1);
+                nms.setN2(n2);
+
+                $.ajax({
+                    type: 'POST',
+                    url:"http://localhost:8080/login",
+                    data: JSON.stringify(nms),
+                    headers:{
+                        "Content-Type": "application/json",
+                    }
+                });
+
+                window.location.href = "inGame.html";
+                
+            }           
+        </script>
+
+    </head>
+    <body background="img/Super-Bomberman-R-1.jpg">
+
+        <h1 id="titulo">BOMBERMAN</h1>
+
+        <div id="tablaBotones">
+
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-xs-6" style="background-color:pink">
+                        <form>
+                            <div class="form-group">
+                                <label for="nom1">Nombre del jugador 1:</label>
+                                <input type="text" class="form-control" id="nombre1">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-6" style="background-color:pink;">
+                        <form>
+                            <div class="form-group">
+                                <label for="nom2">Nombre del jugador 2:</label>
+                                <input type="text" class="form-control" id="nombre2">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12" style="background-color:pink;">
+                        <p align="center"><a href="JavaScript:setTimeout(loadGame,650)" onmousedown="raton.play()" class="myButtonJugar" id="BotonJugar"> Jugar </a></p>
+                        <p align="right"><a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        
+    </body>
+</html>
+
