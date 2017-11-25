@@ -164,3 +164,59 @@
   
 
   </ul>
+  
+<br>
+
+  ### Fase 3
+<ul>
+  <li><b>Capturas de las pantallas:</b></li>
+
+  <p>La primera pantalla que ha sufrido cambios ha sido la tabla de récords: los datos del <i>placeholder</i> se han sustituido por las puntuaciones reales pedidas al servidor ya en orden. Además, se cambian los títulos a inglés por cuestiones de consistencia de diseño.</p></ul>
+
+  ![Records](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/records2_img.png)
+
+  <br>
+  
+  <p>El sistema de datos recibidos del servidor también ha hecho posible mostrar el nombre introducido por el jugador ganador al final de la partida.</p></ul>
+
+  ![Fin de partida](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/end2_img.png)
+  
+  <br>
+  
+  <p>Por último, la mayor novedad radica en la pantalla de introducción de nombres. Situada antes de empezar una partida, solicita el nombre de ambos jugadores (de manera provisional mientras jueguen todos desde el mismo cliente). Cuando no se introduce ningún nombre, el sistema automáticamente utiliza la palabra "anónimo".</p></ul>
+
+  ![Login](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/Login_img.png)
+  
+  <br>
+  
+  <ul><li><b>Diagrama de navegación:</b></li>
+
+  <p>A continuación se muestra el diagrama de navegación actualizado.
+  </p></ul>
+  
+  ![Diagrama](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/diagramaDeNavegaci%C3%B3n2.jpg)
+  
+  <br>
+  
+  <ul><li><b>Diagrama de estados y API REST:</b></li>
+
+  <p>Para terminar, este es el esquema simplificado de clases y su funcionamiento en la parte del servidor. Incluye todas las clases (sin atributos ni métodos), las relaciones entre ellas y la función que ejercen en la conexión REST.
+  </p></ul>
+  
+  ![Diagrama](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/diagramaDeClasesYRest.jpg)
+  
+  <br>
+  
+  <ul><li><b>Instrucciones para la ejecución:</b></li>
+  </ul>
+    <ol>
+      <li>El ordenador debe tener Java instalado.</li>
+      <li>Se descomprime el archivo .zip descargado del repositorio.</li>
+      <li>Mientras se pulsa la tecla "shift", hacer clic con el botón derecho sobre la carpeta "Ejecución".</li>
+      <li>Seleccionar "Abrir la ventana de PowerShell aquí".</li>
+      <li>Escribir "java -jar bomberServer.jar".</li>
+      <li>Sin cerrar la ventana de PowerShell, abrir el archivo "BOMBERMAN GAME" que se encuentra dentro de la carpeta "Ejecución".</li>
+    </ol>
+
+
+  </ul>
