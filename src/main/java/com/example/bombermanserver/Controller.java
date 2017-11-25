@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     
-    public static Usuarios users1 = new Usuarios();
     public static String[] jugadores = new String[2];
 	
 	@GetMapping("/records")
@@ -88,20 +87,6 @@ public class Controller {
             return jug;
 	}
 	
-        /*@PostMapping("/login")
-	public String login(@RequestBody String nombres) throws FileNotFoundException, IOException {
-            
-            //ESCRITURA EN EL ARCHIVO
-            File myFile = new File("temp.json");
-            myFile.createNewFile();
-            FileOutputStream fOut = new FileOutputStream(myFile);
-            OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-            myOutWriter.append(nombres);
-            myOutWriter.close();
-            fOut.close();
-            
-            return nombres;
-	}*/
         
         @PostMapping("/login/{id}")
 	public String loginP(@PathVariable int id, @RequestBody String nombre) throws FileNotFoundException, IOException {
@@ -117,36 +102,6 @@ public class Controller {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 	}
-        
-        /*@GetMapping("/login")
-	public Usuarios loginG() throws FileNotFoundException, IOException {
-            Gson gson = new Gson();
-        
-            //LECTURA DEL ARCHIVO        
-            File myFile2 = new File("temp.json");
-            FileInputStream fIn = new FileInputStream(myFile2);
-            BufferedReader myReader = new BufferedReader(new InputStreamReader(fIn));
-            String aDataRow = "";
-            String aBuffer = ""; //Holds the text
-            while ((aDataRow = myReader.readLine()) != null) 
-            {
-                aBuffer += aDataRow ;
-            }
-            myReader.close();        
-            
-            Usuarios users = gson.fromJson(aBuffer, Usuarios.class);
-            
-            return users;
-	}
-
-        
-        @GetMapping("/login")
-        
-	public String[]  getLogin() throws FileNotFoundException, IOException {
-            String []  nom= {"a","b"};
-            return nom;
-	}
-        */
         
         
 }
