@@ -13,7 +13,10 @@ import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +54,7 @@ public class Controller {
 	}
         
         @PostMapping("/actualizar")
-	public String postWinner(@RequestBody String nombre) throws FileNotFoundException, IOException {
+	public String postWinner(@RequestBody String jug) throws FileNotFoundException, IOException {
             
             Gson gson = new Gson();
         
@@ -69,7 +72,7 @@ public class Controller {
             
             Lista listaJugT = gson.fromJson(aBuffer, Lista.class);
             
-            listaJugT.actualizar2(nombre);
+            listaJugT.actualizar2(jug);
             
             String json = gson.toJson(listaJugT, Lista.class);
             
@@ -82,10 +85,10 @@ public class Controller {
             myOutWriter.close();
             fOut.close();
             
-            return nombre;
+            return jug;
 	}
 	
-        @PostMapping("/login")
+        /*@PostMapping("/login")
 	public String login(@RequestBody String nombres) throws FileNotFoundException, IOException {
             
             //ESCRITURA EN EL ARCHIVO
@@ -98,9 +101,24 @@ public class Controller {
             fOut.close();
             
             return nombres;
+	}*/
+        
+        @PostMapping("/login/{id}")
+	public String loginP(@PathVariable int id, @RequestBody String nombre) throws FileNotFoundException, IOException {
+            jugadores[id-1] = nombre;
+            return nombre;
 	}
         
-        @GetMapping("/login")
+        @GetMapping("/login/{id}")
+	public ResponseEntity<String> loginG(@PathVariable int id) throws FileNotFoundException, IOException {   
+            if (jugadores[id-1] != null){
+                return new ResponseEntity<>(jugadores[id-1], HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+	}
+        
+        /*@GetMapping("/login")
 	public Usuarios loginG() throws FileNotFoundException, IOException {
             Gson gson = new Gson();
         
@@ -121,7 +139,7 @@ public class Controller {
             return users;
 	}
 
-        /*
+        
         @GetMapping("/login")
         
 	public String[]  getLogin() throws FileNotFoundException, IOException {

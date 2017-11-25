@@ -2,6 +2,30 @@
 var jugadores = [];
 var tecla;
 
+var nombre1;
+var nombre2;
+
+$.ajax({
+    type: 'GET',
+    url:"http://localhost:8080/login/1",
+    headers: {
+        "Content-type": "application/json"
+    }
+}).done(function(dato) {
+    nombre1 = dato;
+});
+
+$.ajax({
+    type: 'GET',
+    url:"http://localhost:8080/login/2",
+    headers: {
+        "Content-type": "application/json"
+    }
+}).done(function(dato) {
+    nombre2 = dato;
+});
+
+
 var jugador = function(id){
     // id: Identificador del jugador (empezando en 0)
     var nombre;
@@ -11,6 +35,9 @@ var jugador = function(id){
     this.vel; //Velocidad
     this.nBombas; //Número de bombas
 
+
+            //Cuando solo se juegue con un jugador, aquí habrá que hacer un POST que suba el nombre al servidor para que este administre los 8 nombres
+            //Cuando acabe la partida, en CantarVictoria se pide al servidor el nombre del ganador (no se ocupa el cliente de almacenarlos)
     this.init = function(){
         switch(id){
             case 0:

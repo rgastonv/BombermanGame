@@ -18,8 +18,6 @@
             raton.src = "SONIDOS/CLICK.wav";
             function loadHome(){window.location.href = "index.html";}  
             
-            
-
             function loadGame(){
 
                 var n1 = document.getElementById("nombre1").value;
@@ -27,31 +25,27 @@
                 if (n1 == null || n1 == "") {n1 = "anónimo";}
                 if (n2 == null || n2 == "") {n2 = "anónimo";} 
 
-                var oNombres = function(){
-                    var nombres =[2];
-                    this.setN1 = function(n){
-                        nombres[0] = n;
+                $.ajax({
+                    type: 'POST',
+                    url:"http://localhost:8080/login/1",
+                    data: n1,
+                    headers:{
+                        "Content-Type": "application/json",
                     }
-                    this.setN2 = function(n){
-                        nombres[1] = n;
-                    }
-                }
-                var nms = new oNombres();
-                nms.setN1(n1);
-                nms.setN2(n2);
+                });
 
                 $.ajax({
                     type: 'POST',
-                    url:"http://localhost:8080/login",
-                    data: JSON.stringify(nms),
+                    url:"http://localhost:8080/login/2",
+                    data: n2,
                     headers:{
                         "Content-Type": "application/json",
                     }
                 });
 
                 window.location.href = "inGame.html";
-                
-            }           
+            }
+            
         </script>
 
     </head>
@@ -64,18 +58,21 @@
             <div class="container">
                 <div class="row">
                     
-                    <div class="col-xs-6" style="background-color:pink">
+                    <div class="col-xs-12" style="background-color:pink">
                         <form>
-                            <div class="form-group">
-                                <label for="nom1">Nombre del jugador 1:</label>
+                            <div class="form-group" align="center">
+                                <label for="nom1"><h1>Nombre del jugador 1:</h1></label>
                                 <input type="text" class="form-control" id="nombre1">
                             </div>
                         </form>
                     </div>
-                    <div class="col-xs-6" style="background-color:pink;">
+                </div>
+                <div class="row">
+                    
+                    <div class="col-xs-12" style="background-color:pink">
                         <form>
-                            <div class="form-group">
-                                <label for="nom2">Nombre del jugador 2:</label>
+                            <div class="form-group" align="center">
+                                <label for="nom2"><h1>Nombre del jugador 2:</h1></label>
                                 <input type="text" class="form-control" id="nombre2">
                             </div>
                         </form>
@@ -83,17 +80,16 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-12" style="background-color:pink;">
-                        <p align="center"><a href="JavaScript:setTimeout(loadGame,650)" onmousedown="raton.play()" class="myButtonJugar" id="BotonJugar"> Jugar </a></p>
-                        <p align="right"><a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>
+                    <div class="col-xs-8" style="background-color:pink;" align="right">
+                        <p style="display:inline-block;" align="center"><a href="JavaScript:setTimeout(loadGame,650)" onmousedown="raton.play()" class="myButtonJugar" id="BotonJugar"> Jugar </a></p>
                     </div>
-
+                    <div class="col-xs-4" style="background-color:pink;" align="right">
+                        <p style="display:inline-block;"><a href="JavaScript:setTimeout(loadHome,650)" onmousedown="raton.play()" class="myButton"><img src="img/flecha.png" height="50px;"> </a></p>
+                    </div>
+                    
                 </div>
-
             </div>
-
         </div>
-        
     </body>
 </html>
 

@@ -1,22 +1,5 @@
 var game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
 
-var nombre1;
-var nombre2;
-var datee;
-
-$.ajax({
-    type: 'GET',
-    url:"http://localhost:8080/login",
-    headers: {
-        "Content-type": "application/json"
-    }
-}).done(function(dato) {
-    datee = dato;
-    nombre1= dato.nombres[0];
-    nombre2= dato.nombres[1];
-});
-
-
 var mapa = [                                                    // Mapa de tiles
                 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],            // 0: Césped
                                                                 // 1: Césped forzado
