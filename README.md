@@ -209,14 +209,16 @@
   
   <ul><li><b>Instrucciones para la ejecución:</b></li>
   </ul>
-    <ol>
-      <li>El ordenador debe tener Java instalado.</li>
-      <li>Se descomprime el archivo .zip descargado del repositorio.</li>
-      <li>Mientras se pulsa la tecla "shift", hacer clic con el botón derecho sobre la carpeta "Ejecución".</li>
-      <li>Seleccionar "Abrir la ventana de PowerShell aquí".</li>
-      <li>Escribir "java -jar bomberServer.jar".</li>
-      <li>Sin cerrar la ventana de PowerShell, abrir el archivo "BOMBERMAN GAME" que se encuentra dentro de la carpeta "Ejecución".</li>
-    </ol>
+  <ol>
+    <li>El ordenador debe tener Java instalado.</li>
+    <li>Se descomprime el archivo .zip descargado del repositorio.</li>
+    <li>Mientras se pulsa la tecla "shift", hacer clic con el botón derecho sobre la carpeta "Ejecución".</li>
+    <li>Seleccionar "Abrir la ventana de PowerShell aquí".</li>
+    <li>Escribir "java -jar bomberServer.jar".</li>
+    <li>Sin cerrar la ventana de PowerShell, abrir el archivo "BOMBERMAN GAME" que se encuentra dentro de la carpeta "Ejecución".</li>
+  </ol>
+  
+  <p>Si el ordenador cuenta con un IDE como Eclipse o NetBeans, se puede ejecutar el servidor desde la clase "BomberserverApplication.java", después abrir en un navegador web "localhost:8080".</p>
 
 
   </ul>
