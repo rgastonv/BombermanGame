@@ -15,7 +15,7 @@ window.onload = function (){
         
     $.ajax({
         type: 'GET',
-        url:"http://localhost:8080/records",
+        url:"/records",
         headers: {
             "Content-type": "application/json"
         }

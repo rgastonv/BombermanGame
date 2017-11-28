@@ -7,7 +7,7 @@ var nombre2;
 
 $.ajax({
     type: 'GET',
-    url:"http://localhost:8080/login/1",
+    url:"login/1",
     headers: {
         "Content-type": "application/json"
     }
@@ -17,7 +17,7 @@ $.ajax({
 
 $.ajax({
     type: 'GET',
-    url:"http://localhost:8080/login/2",
+    url:"/login/2",
     headers: {
         "Content-type": "application/json"
     }

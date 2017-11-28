@@ -232,7 +232,7 @@ var cantarVictoria = function(){
             //POST
             $.ajax({
                 type: 'POST',
-                url:"http://localhost:8080/actualizar",
+                url:"/actualizar",
                 data: jugadores[i].getNombre(),
                 headers:{
                     "Content-Type": "application/json",
