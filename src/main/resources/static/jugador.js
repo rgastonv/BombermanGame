@@ -1,5 +1,5 @@
 //Array:
-var jugadores = [];
+
 var tecla;
 
 var nombre1;
@@ -7,7 +7,7 @@ var nombre2;
 
 $.ajax({
     type: 'GET',
-    url:"login/1",
+    url:"/login/1",
     headers: {
         "Content-type": "application/json"
     }
@@ -94,6 +94,10 @@ var jugador = function(id){
     }
 
     this.action = function (n){
+/*
+        //Mandar al server this.id y action(n)
+        
+*/
         switch(n){
             case 0:
 	            sprite.body.velocity.x = -this.vel;
@@ -221,7 +225,6 @@ var jugador = function(id){
     }
 }
 
-
 function moverJugadores(){
      /*
         -A / J =0 -> Jugador a la izquierda
@@ -231,31 +234,36 @@ function moverJugadores(){
         -Q / U = 5 -> Colocar bomba
         -  = (-1) -> Jugador Quieto
     */
+    
+    
 
-    if(jugadores[0] != undefined){
+    if(jugadores[myLocalId] != undefined){
         // Controles del jugador 1: ASDW
 
         teclaQ = game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.add
        
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)){
-            jugadores[0].action(0);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+            var msg = { id : myLocalId, action : 0 }
+            connection.send(JSON.stringify(msg));
+            jugadores[myLocalId].action(0);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Izquierda
         else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){
-            jugadores[0].action(1);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+            jugadores[myLocalId].action(1);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Arriba
         else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            jugadores[0].action(2);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+            jugadores[myLocalId].action(2);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Abajo
         else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
-            jugadores[0].action(3);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);}
+            jugadores[myLocalId].action(3);
+            if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Derecha
-        else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[0].action(5);} // PonerBomba
-        else {jugadores[0].action(-1);} // Quieto
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);} // PonerBomba
+        //else {jugadores[myLocalId].action(-1);} // Quieto
+
     }
     
     if(jugadores[1] != undefined){
@@ -279,4 +287,26 @@ function moverJugadores(){
         else if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);} // PonerBomba
         else{jugadores[1].action(-1);} // Quieto
     }
+}
+
+
+function moverJugadores2(id, act){
+     /*
+        -A / J =0 -> Jugador a la izquierda
+        -W / I =1 -> Jugador hacia arriba
+        -S / K =2 -> Jugador hacia abajo
+        -D / L =3 -> Jugador a la derecha
+        -Q / U = 5 -> Colocar bomba
+        -  = (-1) -> Jugador Quieto
+    */
+    
+    
+
+    if(jugadores[id] != undefined){
+        // Controles del jugador 1: ASDW
+
+        jugadores[id].action(act);
+
+    }
+    
 }

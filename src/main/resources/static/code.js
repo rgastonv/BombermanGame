@@ -60,7 +60,6 @@ var mapaLadrillos = [                                           // Mapa de ladri
      ];
 
 
-
 var mapaBonificadores = [
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],            
                                                                
@@ -92,7 +91,7 @@ var mapaBonificadores = [
 
 
 var cursors;
-var nJugadores = 2;
+var nJugadores = 8;
 var indexBomba = 0; // Índice de la bomba en el mapa
 var bombasCont = 0; // Índice de la bomba en el grupo
 
@@ -427,3 +426,4 @@ var partida = function(){
     cursors = game.input.keyboard.createCursorKeys();
     }
 }
+
