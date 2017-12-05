@@ -18,18 +18,12 @@ public class BomberserverApplication implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry){
         registry.addHandler(dataHandler(),"/data").setAllowedOrigins("*");
-        registry.addHandler(idsHandler(),"/ids").setAllowedOrigins("*");
     }
     
     @Bean
     public WebSocketDataHandler dataHandler(){
         return new WebSocketDataHandler();
     }
-    @Bean
-    public WebSocketIdsHandler idsHandler(){
-        return new WebSocketIdsHandler();
-    }
-    
   
     public static void main(String[] args) throws IOException {
               

@@ -9,29 +9,27 @@ connection.onerror = function(e) {
 connection.onmessage = function(msg) {
     console.log("Mensaje de WS: " + msg.data);
     var message = JSON.parse(msg.data)
-    console.log(message.action);
-    var mid= message.id;
-    var mAT= mid.action;
-    moverJugadores2(mid,mAT);
+    var tipo = parseInt(message[0]);
+    switch(tipo){
+        case 0:
+            myLocalId = parseInt(message[1]);
+            console.log("Velaske yo soi wapa: " + myLocalId);
+            break;
+        case 1:
+            var idAct = JSON.parse(message[1]);
+            moverJugadores2(parseInt(idAct[0]) , parseInt(idAct[1]));
+            console.log("El jugador " + idAct[0] + " usa acción " + idAct[1]);
+            break;
+        case 2:
+            break;
+        default:
+            console.log("Ha saltado default en conexion")
+            break;
+            
+    }
+    
 }
 
 connection.onclose = function() {
-	console.log("Cerrando socket.");
-}
-
-var connection2 = new WebSocket("ws://" + window.location.host + "/ids");
-
-connection2.onerror = function(e) {
-	console.log("WebSocket ha fallado: " + e);
-}
-
-connection2.onmessage = function(msg) {
-    
-    var message = JSON.parse(msg.data)
-    myLocalId = message.id;
-    console.log("Local id es : " + myLocalId);
-}
-
-connection2.onclose = function() {
 	console.log("Cerrando socket.");
 }

@@ -183,6 +183,7 @@ function create() {
 
 function update() {
     colYResetVel();
+    pillarInput();
     moverJugadores();
 }
 

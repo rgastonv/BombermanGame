@@ -5,6 +5,8 @@ var tecla;
 var nombre1;
 var nombre2;
 
+
+
 $.ajax({
     type: 'GET',
     url:"/login/1",
@@ -28,6 +30,21 @@ $.ajax({
 
 var jugador = function(id){
     // id: Identificador del jugador (empezando en 0)
+    /*
+        -A / J =0 -> Jugador a la izquierda
+        -W / I =1 -> Jugador hacia arriba
+        -S / K =2 -> Jugador hacia abajo
+        -D / L =3 -> Jugador a la derecha
+        -Q / U = 5 -> Colocar bomba
+        -  = (4) -> Jugador Quieto
+    */
+    this.bools = [false,false,false,false,true,false];
+    var boolW = false;
+    var boolD = false;
+    var boolS = false;
+    var boolA = false;
+    var boolQ = false;
+    var boolX = true;
     var nombre;
     var id = id;
     var sprite;
@@ -119,7 +136,7 @@ var jugador = function(id){
             	sprite.animations.play('right');
             	break;
 
-            case -1:
+            case 4:
                 sprite.animations.stop();
                 sprite.frame = 11;
             	break;
@@ -225,14 +242,14 @@ var jugador = function(id){
     }
 }
 
-function moverJugadores(){
+function pillarInput(){
      /*
         -A / J =0 -> Jugador a la izquierda
         -W / I =1 -> Jugador hacia arriba
         -S / K =2 -> Jugador hacia abajo
         -D / L =3 -> Jugador a la derecha
         -Q / U = 5 -> Colocar bomba
-        -  = (-1) -> Jugador Quieto
+        -  = (4) -> Jugador Quieto
     */
     
     
@@ -244,25 +261,91 @@ function moverJugadores(){
        
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)){
-            var msg = { id : myLocalId, action : 0 }
-            connection.send(JSON.stringify(msg));
-            jugadores[myLocalId].action(0);
+            if(!jugadores[myLocalId].bools[0]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,0]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[0] = true;
+            }
+            
+            
+            
+            
+            //jugadores[myLocalId].action(0);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Izquierda
         else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){
-            jugadores[myLocalId].action(1);
+            if(!jugadores[myLocalId].bools[1]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,1]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[1] = true;
+            };
+            
+            //jugadores[myLocalId].action(1);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Arriba
         else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            jugadores[myLocalId].action(2);
+            if(!jugadores[myLocalId].bools[2]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,2]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[2] = true;
+            }
+            
+            //jugadores[myLocalId].action(2);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Abajo
         else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
-            jugadores[myLocalId].action(3);
+            if(!jugadores[myLocalId].bools[3]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,3]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[3] = true;
+            }
+            
+            //jugadores[myLocalId].action(3);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Derecha
-        else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);} // PonerBomba
-        //else {jugadores[myLocalId].action(-1);} // Quieto
+        else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){
+            if(!jugadores[myLocalId].bools[5]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,5]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[5] = true;
+            }
+            
+            //jugadores[myLocalId].action(5);
+        } // PonerBomba
+        else {
+            if(!jugadores[myLocalId].bools[4]){
+                var arr = [String(1),String(1)];
+                var acti = "[";
+                acti += String([myLocalId,4]);
+                acti += "]";
+                arr[1]= acti;
+                connection.send(JSON.stringify(arr));
+                jugadores[myLocalId].bools[4] = true;
+            }
+            
+           
+            //jugadores[myLocalId].action(4);
+        } // Quieto
 
     }
     
@@ -289,24 +372,25 @@ function moverJugadores(){
     }
 }
 
+function moverJugadores(){
+    for(var i =0;i<jugadores.length;i++){
+        if(jugadores[i]!= undefined){
+            for(var j = 0; j < jugadores[i].bools.length; j++){
+                if(jugadores[i].bools[j]){
+                    jugadores[i].action(j);
+                }
+            }
+        }
+    }
+}
 
 function moverJugadores2(id, act){
-     /*
-        -A / J =0 -> Jugador a la izquierda
-        -W / I =1 -> Jugador hacia arriba
-        -S / K =2 -> Jugador hacia abajo
-        -D / L =3 -> Jugador a la derecha
-        -Q / U = 5 -> Colocar bomba
-        -  = (-1) -> Jugador Quieto
-    */
-    
-    
-
+     
     if(jugadores[id] != undefined){
-        // Controles del jugador 1: ASDW
-
-        jugadores[id].action(act);
-
+        for(var i = 0; i<jugadores[id].bools.length; i++){
+            jugadores[id].bools[i]=false
+        }
+        jugadores[id].bools[act] = true;
     }
     
 }

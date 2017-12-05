@@ -3,7 +3,9 @@ package com.example.bombermanserver;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.Gson;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.web.socket.CloseStatus;
@@ -13,16 +15,20 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 class WebSocketDataHandler extends TextWebSocketHandler {
     
-    public static int arry = -1;
-    
-    private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones //HACER PUBLICA Y QUITAR DE IDS
+    private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
     private ObjectMapper mapper = new ObjectMapper(); //Convertidor json (jackson)
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("Abierta sesión de usuario (data): " + session.getId());
         sessions.put(session.getId(), session); //Se mete la nueva sesión en el hashmap
-        arry++;
+        
+        Gson gson = new Gson();
+        String[] datos = new String[2];
+        datos[0] = "0";
+        datos[1] = session.getId();
+
+        session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
     }
 
     @Override
@@ -33,14 +39,32 @@ class WebSocketDataHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-            
         System.out.println("Datos recibidos: " + message.getPayload());
-        JsonNode node = mapper.readTree(message.getPayload());
+        
+        String msg = message.getPayload();
+        String[] datos;
+        
+        Gson gson = new Gson();
+        datos = gson.fromJson(msg, String[].class);
+        int tipo = parseInt(datos[0]);
+        
+        switch(tipo){
+            case 0:
+                System.out.println("Cómo narices he hecho esto");
+                break;
+            case 1:
+                int[] act = gson.fromJson(datos[1], int[].class);
+                enviarAcciones(act);
+                break;
+            default:
+                break;
+        }    
+        
 
-        sendOtherParticipants(session, node);
+        //sendOtherParticipants(session, node);
     }
 
-    private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
+    /*private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
 
         System.out.println("Datos enviados: " + node.toString());
 
@@ -56,5 +80,16 @@ class WebSocketDataHandler extends TextWebSocketHandler {
             }
         }
         
+    }*/
+    
+    private void enviarAcciones(int[] act) throws IOException{
+        for(WebSocketSession participant : sessions.values()) {
+            Gson gson = new Gson();
+            String[] datos = new String[2];
+            datos[0] = "1";
+            datos[1] = gson.toJson(act, int[].class);
+            
+            participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+        }
     }
 }
