@@ -6,7 +6,6 @@ var nombre1;
 var nombre2;
 
 
-
 $.ajax({
     type: 'GET',
     url:"/login/1",
@@ -39,12 +38,6 @@ var jugador = function(id){
         -  = (4) -> Jugador Quieto
     */
     this.bools = [false,false,false,false,true,false];
-    var boolW = false;
-    var boolD = false;
-    var boolS = false;
-    var boolA = false;
-    var boolQ = false;
-    var boolX = true;
     var nombre;
     var id = id;
     var sprite;

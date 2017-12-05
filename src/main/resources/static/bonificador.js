@@ -6,12 +6,12 @@ bonificadores[0] = undefined;
 var gBonificadores;
 
 
-var bonificador = function(x, y){
+var bonificador = function(x, y,te){
     this.tipo;
     var sprite;
 
     this.init = function(){
-        this.tipo = Math.floor(Math.random()*6+1)*(-1);
+        this.tipo = te;
 
         //B1: más velocidad
         //B2: más bombas

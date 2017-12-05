@@ -58,11 +58,9 @@ var mapaLadrillos = [                                           // Mapa de ladri
 
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
      ];
-
-
-var mapaBonificadores = [
+var mapaBonificadores = [                                           
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],            
-                                                               
+                                                                
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],            
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -88,6 +86,9 @@ var mapaBonificadores = [
 
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
      ];
+
+
+
 
 
 var cursors;
@@ -265,9 +266,8 @@ function destruirLadrillo(x, y){
     ladrillos.children[(mapaLadrillos[y][x])-1].kill();
     mapaLadrillos[y][x] = 0;
 
-    var r = Math.random();
-    if (r > 0.5){
-        var nuevo = new bonificador(x, y);
+    if (parseInt(mapaBonificadores2[y][x])!=0){
+        var nuevo = new bonificador(x, y,parseInt(mapaBonificadores2[y][x]));
         nuevo.init();
         for(var k = 0; k <= bonificadores.length; k++){
             if (bonificadores[k] == undefined){
@@ -283,148 +283,149 @@ function destruirLadrillo(x, y){
 var partida = function(){
     this.init = function(){
 
-    document.getElementById("countdown").volume = 0.5;
+        document.getElementById("countdown").volume = 0.5;
+
+        boom = game.add.audio('BOOM');
+        boom.volume = 0.15;
+
+        powerUp = game.add.audio('POWERUP');
+        winner = game.add.audio('WINNER');
+        winner.volume = 0.6;
+        popBomba = game.add.audio('PONERBOMBA');
+        morir = game.add.audio('MORIR');
+
+
+        ladrillos = game.add.group();
+        piedras = game.add.group();
+        piedrasBordes = game.add.group();
+        gMuroInferior = game.add.group(); // Hecho aparte por las oclusiones entre los sprites
+
+        ladrillos.enableBody = true;
+        piedras.enableBody = true;
+        piedrasBordes.enableBody = true;
+
+        gMuroInferior.enableBody = true;
+        gArbolInf = game.add.group();
+        gArbolsup = game.add.group();
+
+        gTuboSupCentro = game.add.group();
+        gTuboInfIzq = game.add.group();
+        gTuboInfDcha = game.add.group();
+        gTuboSupIzq = game.add.group();
+        gTuboSupDcha = game.add.group();
+
+        gTuboInfIzq.enableBody = true;
+        gTuboInfDcha.enableBody = true;
+        gTuboSupIzq.enableBody = true;
+        gTuboSupDcha.enableBody = true;
+
+        gArbolInf.enableBody = true;
+        gArbolsup.enableBody= true;
+        gBombas = game.add.group();
+        gBonificadores = game.add.group();
+
+        gBombas.enableBody = true;
+        gBonificadores.enableBody = true;
+
+        var fondo = game.add.sprite(0, 0, 'fondo');
+        fondo.sendToBack();
+
+        // Piedras de arriba:
+        for (var j = 0; j < mapa[0].length; j++) {
+            var piedraBorde = piedrasBordes.create(j*32, 0, 'piedra');
+            piedraBorde.body.immovable = true;
+        }
+
+        var contador = 1; // Índice de bloque de ladrillo
         
-    boom = game.add.audio('BOOM');
-    boom.volume = 0.15;
+        for (var i = 1; i < mapa.length; i++) {
+            fila = mapa[i];
+            for (var j = 0; j < fila.length ; j++) {
+                if (fila[j] == 0) {
+                    if(parseInt(randomMapa[i][j]) == 1 && fila[j] == 0){   // En casillas con césped los ladrillos se crean aleatoriamente con una probabilidad del 75%
+                        console.log(i+ " - "+ j);
+                        mapaLadrillos[i][j] = contador;
+                        contador++;
+                        var bloqueLadrillo = ladrillos.create(j*32, i*32+12, 'ladrillo2');
+                        game.world.bringToTop(ladrillos);
+                        bloqueLadrillo.body.immovable = true;
+                    }
 
-    powerUp = game.add.audio('POWERUP');
-    winner = game.add.audio('WINNER');
-    winner.volume = 0.6;
-    popBomba = game.add.audio('PONERBOMBA');
-    morir = game.add.audio('MORIR');
-
-
-    ladrillos = game.add.group();
-    piedras = game.add.group();
-    piedrasBordes = game.add.group();
-    gMuroInferior = game.add.group(); // Hecho aparte por las oclusiones entre los sprites
-
-    ladrillos.enableBody = true;
-    piedras.enableBody = true;
-    piedrasBordes.enableBody = true;
-    
-    gMuroInferior.enableBody = true;
-    gArbolInf = game.add.group();
-    gArbolsup = game.add.group();
-        
-    gTuboSupCentro = game.add.group();
-    gTuboInfIzq = game.add.group();
-    gTuboInfDcha = game.add.group();
-    gTuboSupIzq = game.add.group();
-    gTuboSupDcha = game.add.group();
-    
-    gTuboInfIzq.enableBody = true;
-    gTuboInfDcha.enableBody = true;
-    gTuboSupIzq.enableBody = true;
-    gTuboSupDcha.enableBody = true;
-        
-    gArbolInf.enableBody = true;
-    gArbolsup.enableBody= true;
-    gBombas = game.add.group();
-    gBonificadores = game.add.group();
-
-    gBombas.enableBody = true;
-    gBonificadores.enableBody = true;
-
-    var fondo = game.add.sprite(0, 0, 'fondo');
-    fondo.sendToBack();
-
-    // Piedras de arriba:
-    for (var j = 0; j < mapa[0].length; j++) {
-        var piedraBorde = piedrasBordes.create(j*32, 0, 'piedra');
-        piedraBorde.body.immovable = true;
-    }
-
-    var contador = 1; // Índice de bloque de ladrillo
-
-    for (var i = 1; i < mapa.length; i++) {
-        fila = mapa[i];
-        for (var j = 0; j < fila.length ; j++) {
-            if (fila[j] == 0) {
-                if(Math.random() < 0.75 && fila[j] == 0){   // En casillas con césped los ladrillos se crean aleatoriamente con una probabilidad del 75%
-                    mapaLadrillos[i][j] = contador;
-                    contador++;
-                    var bloqueLadrillo = ladrillos.create(j*32, i*32+12, 'ladrillo2');
-                    game.world.bringToTop(ladrillos);
-                    bloqueLadrillo.body.immovable = true;
+                }else if(fila[j] == 3){         // Bloques de piedra
+                    var bloquePiedra = piedras.create(j*32,i*32+12,'piedra2');
+                    game.world.bringToTop(piedras);
+                    bloquePiedra.body.immovable = true;
                 };
-
-            }else if(fila[j] == 3){         // Bloques de piedra
-                var bloquePiedra = piedras.create(j*32,i*32+12,'piedra2');
-                game.world.bringToTop(piedras);
-                bloquePiedra.body.immovable = true;
             };
         };
-    };
-   
-    // Jugadores y sus configuraciones:
-    for (var i = 0; i < nJugadores; i++){
-        jugadores[i] = new jugador(i);
-        jugadores[i].init();
-    }
-    
-    
-    // Tubos y árboles:
-    var tubo;
 
-    for(var i = 0; i < 6 ;i++){
-        tubo = gTuboInfDcha.create(80+i*64, 316, 'tubo_debajo_dcha');
-        tubo.body.immovable = true;
-        tubo.body.setSize(11, 27, 53,53);
+        // Jugadores y sus configuraciones:
+        for (var i = 0; i < nJugadores; i++){
+            jugadores[i] = new jugador(i);
+            jugadores[i].init();
+        }
 
-        tubo = gTuboInfIzq.create(80+i*64, 316, 'tubo_debajo_izq');
-        tubo.body.immovable = true;
-        tubo.body.setSize(8, 27, 0,53);
 
-        tubo = gTuboSupCentro.create(80+i*64, 316, 'tubo_encima_centro');
-        game.world.bringToTop(gTuboSupCentro);
+        // Tubos y árboles:
+        var tubo;
 
-        tubo = gTuboSupIzq.create(80+i*64, 316, 'tubo_encima_izq');
-        tubo.body.immovable = true;
-        tubo.body.setSize(8, 37, 0,16);
-        game.world.bringToTop(gTuboSupIzq);
+        for(var i = 0; i < 6 ;i++){
+            tubo = gTuboInfDcha.create(80+i*64, 316, 'tubo_debajo_dcha');
+            tubo.body.immovable = true;
+            tubo.body.setSize(11, 27, 53,53);
 
-        tubo = gTuboSupDcha.create(80+i*64, 316, 'tubo_encima_dcha');
-        tubo.body.immovable = true;
-        tubo.body.setSize(11, 37, 53,16);
-        game.world.bringToTop(gTuboSupIzq);
-    }
-    
-    var parteArbol = gArbolsup.create(32,316,'arbol_encima');
-    parteArbol.body.immovable = true;    
-    parteArbol = gArbolsup.create(game.world.width - 80,316,'arbol_encima');   
-    parteArbol.body.immovable = true; 
-    game.world.bringToTop(gArbolsup);
-        
-    parteArbol = gArbolInf.create(game.world.width - 80,316,'arbol_debajo');
-    parteArbol.body.immovable = true; 
-    parteArbol.body.setSize(48, 32, 0,48);
-    parteArbol = gArbolInf.create(32,316,'arbol_debajo');
-    parteArbol.body.immovable = true; 
-    parteArbol.body.setSize(48, 32, 0,48);
-    
-    // Muros laterales:
-    for (var i = 1; i < mapa.length-1; i++) {
-        fila = mapa[i];
-        for (var j = 0; j < fila.length; j++) {
-            if (fila[j] == 2) {
-                var piedraBorde = piedrasBordes.create(j*32, i*32, 'piedra');
-                piedraBorde.body.immovable = true;
-                piedraBorde.body.setSize(32, 32, 0, 12);
+            tubo = gTuboInfIzq.create(80+i*64, 316, 'tubo_debajo_izq');
+            tubo.body.immovable = true;
+            tubo.body.setSize(8, 27, 0,53);
+
+            tubo = gTuboSupCentro.create(80+i*64, 316, 'tubo_encima_centro');
+            game.world.bringToTop(gTuboSupCentro);
+
+            tubo = gTuboSupIzq.create(80+i*64, 316, 'tubo_encima_izq');
+            tubo.body.immovable = true;
+            tubo.body.setSize(8, 37, 0,16);
+            game.world.bringToTop(gTuboSupIzq);
+
+            tubo = gTuboSupDcha.create(80+i*64, 316, 'tubo_encima_dcha');
+            tubo.body.immovable = true;
+            tubo.body.setSize(11, 37, 53,16);
+            game.world.bringToTop(gTuboSupIzq);
+        }
+
+        var parteArbol = gArbolsup.create(32,316,'arbol_encima');
+        parteArbol.body.immovable = true;    
+        parteArbol = gArbolsup.create(game.world.width - 80,316,'arbol_encima');   
+        parteArbol.body.immovable = true; 
+        game.world.bringToTop(gArbolsup);
+
+        parteArbol = gArbolInf.create(game.world.width - 80,316,'arbol_debajo');
+        parteArbol.body.immovable = true; 
+        parteArbol.body.setSize(48, 32, 0,48);
+        parteArbol = gArbolInf.create(32,316,'arbol_debajo');
+        parteArbol.body.immovable = true; 
+        parteArbol.body.setSize(48, 32, 0,48);
+
+        // Muros laterales:
+        for (var i = 1; i < mapa.length-1; i++) {
+            fila = mapa[i];
+            for (var j = 0; j < fila.length; j++) {
+                if (fila[j] == 2) {
+                    var piedraBorde = piedrasBordes.create(j*32, i*32, 'piedra');
+                    piedraBorde.body.immovable = true;
+                    piedraBorde.body.setSize(32, 32, 0, 12);
+                }
             }
         }
-    }
 
-    // Muro inferior:
-    var muroInferior = gMuroInferior.create(0,672,'muroInferior');
-    muroInferior.body.immovable = true;
-    muroInferior.body.setSize(544, 32, 0, 12);
-    game.world.bringToTop(gMuroInferior);
+        // Muro inferior:
+        var muroInferior = gMuroInferior.create(0,672,'muroInferior');
+        muroInferior.body.immovable = true;
+        muroInferior.body.setSize(544, 32, 0, 12);
+        game.world.bringToTop(gMuroInferior);
 
 
-    // Controles por teclado:
-    cursors = game.input.keyboard.createCursorKeys();
+        // Controles por teclado:
+        cursors = game.input.keyboard.createCursorKeys();
     }
 }
 

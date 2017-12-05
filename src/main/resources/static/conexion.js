@@ -1,6 +1,8 @@
 var myLocalId;
 var connection = new WebSocket("ws://" + window.location.host + "/data");
 var jugadores = [];
+var randomMapa;
+var mapaBonificadores2;
 
 connection.onerror = function(e) {
 	console.log("WebSocket ha fallado: " + e);
@@ -13,7 +15,7 @@ connection.onmessage = function(msg) {
     switch(tipo){
         case 0:
             myLocalId = parseInt(message[1]);
-            console.log("Velaske yo soi wapa: " + myLocalId);
+            console.log("Local ID: " + myLocalId);
             break;
         case 1:
             var idAct = JSON.parse(message[1]);
@@ -21,6 +23,10 @@ connection.onmessage = function(msg) {
             console.log("El jugador " + idAct[0] + " usa acción " + idAct[1]);
             break;
         case 2:
+            randomMapa = JSON.parse(message[1]);
+            break;
+        case 3:
+            mapaBonificadores2  = JSON.parse(message[1]);
             break;
         default:
             console.log("Ha saltado default en conexion")
@@ -31,5 +37,5 @@ connection.onmessage = function(msg) {
 }
 
 connection.onclose = function() {
-	console.log("Cerrando socket.");
+    console.log("Cerrando socket.");
 }
