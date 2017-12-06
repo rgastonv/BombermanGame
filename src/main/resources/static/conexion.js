@@ -36,13 +36,24 @@ connection.onmessage = function(msg) {
             nombres[nId] = nom;
             
             nJugadores = nombres.length;
-            document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
+            
+            if(nom==""){
+                aux = "...";
+            }else{
+                aux = nom;
+            }
+            
+            if (document.getElementById('parrafo' + nId) == null){
+                document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
                             "<div class=\"form-group\" align=\"center\">"+
-                                "<p> Jugador " + nId +": " + nom +"</p> "+
+                                "<p id=\"parrafo"+ nId +"\"> Jugador " + nId +": " + aux +"</p> "+
                             "</div>"+
                         "</form>"+
                     "</div>";
+            }else{
+                document.getElementById('parrafo' + nId).innerHTML = "Jugador " + nId +": " + aux;
+            }
             
             
             /*$.ajax({
@@ -60,26 +71,41 @@ connection.onmessage = function(msg) {
             break;
         case 5:
             var fefeo = JSON.parse(message[1]);
+            var aux;
             console.log(fefeo);
-            for(var i=0; i<fefeo.length; i++){
-                document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
+            for(var i = 0; i<fefeo.length; i++){
+                if(fefeo[i]==""){
+                    aux = "...";
+                }else{
+                    aux = fefeo[i];
+                }
+                if (document.getElementById('parrafo'+i)== null){             
+                    document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
                             "<div class=\"form-group\" align=\"center\">"+
-                                "<p> Jugador " + i +": " + fefeo[i] +"</p> "+
+                                "<p id=\"parrafo"+ i +"\"> Jugador " + i +": " + aux +"</p> "+
                             "</div>"+
                         "</form>"+
-                    "</div>";
+                    "</div>";  
+                }else{
+                    document.getElementById('parrafo' + i).innerHTML = "Jugador " + i +": " + aux;
+                }
+
             
-                    nombres[i]=fefeo[i];
+                nombres[i]=fefeo[i];
+                
+                if (nombres.length >= 8){
+                    document.getElementById('filaInput').innerHTML ="";
+                    document.getElementById('filaTituloInput').innerHTML ="<p>Ya se ha alcanzado el número máximo de jugadores para esta sala. ¡Espera, por favor!</p>";
+                }
             }
-            
             
             break;
         case 6:
-            if(nombres.length == parseInt(message[1])){
+            if(nombres.length == parseInt(message[1]) || nombres.length == 8){
                 cargarGame();
             }else{
-                alert("falta alguien cerda!");
+                alert("Falta alguien por unirse a la sala.");
             }
             
             break;

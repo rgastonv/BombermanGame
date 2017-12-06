@@ -44,7 +44,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         aux = gson.toJson(mapaBonificadores, int[][].class);
         enviarMapaB(session, aux);
         
-        enviarListaNombres(session);
+        enviarListaNombres();
         //jugadores.add("");
     }
 
@@ -153,12 +153,16 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         }
     }
     
-    private void enviarListaNombres(WebSocketSession session) throws IOException{
+    private void enviarListaNombres() throws IOException{
         Gson gson = new Gson();
         String[] datos = new String[2];
-        datos[0] = "5";
-        datos[1] = gson.toJson(jugadores, ArrayList.class);
-        session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+ 
+        for(WebSocketSession participant : sessions.values()) {
+            datos[0] = "5";
+            datos[1] = gson.toJson(jugadores, ArrayList.class);
+
+            participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+        }
     }
     
     
