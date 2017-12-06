@@ -56,6 +56,21 @@ connection.onmessage = function(msg) {
             
     
             break;
+        case 5:
+            var fefeo = JSON.parse(message[1]);
+            console.log(fefeo);
+            for(var i=0; i<fefeo.length; i++){
+                document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
+                        "<form>"+
+                            "<div class=\"form-group\" align=\"center\">"+
+                                "<p> Jugador " + i +": " + fefeo[i] +"</p> "+
+                            "</div>"+
+                        "</form>"+
+                    "</div>";
+            }
+            
+            
+            break;
         default:
             console.log("Ha saltado default en conexion")
             break;

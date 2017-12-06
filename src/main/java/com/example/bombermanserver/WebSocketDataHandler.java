@@ -1,6 +1,7 @@
 package com.example.bombermanserver;
 
 import static com.example.bombermanserver.BomberserverApplication.mapa;
+import static com.example.bombermanserver.BomberserverApplication.numSesiones;
 import static com.example.bombermanserver.BomberserverApplication.mapaBonificadores;
 import static com.example.bombermanserver.Controller.jugadores;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.web.socket.CloseStatus;
@@ -18,7 +20,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 class WebSocketDataHandler extends TextWebSocketHandler {
     
-    private Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
+    public Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
     private ObjectMapper mapper = new ObjectMapper(); //Convertidor json (jackson)
     
     
@@ -27,7 +29,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("Abierta sesión de usuario (data): " + session.getId());
         sessions.put(session.getId(), session); //Se mete la nueva sesión en el hashmap
-        
+        numSesiones = sessions.size();
         Gson gson = new Gson();
         String[] datos = new String[2];
         datos[0] = "0";
@@ -40,6 +42,9 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         
         aux = gson.toJson(mapaBonificadores, int[][].class);
         enviarMapaB(session, aux);
+        
+        enviarListaNombres(session);
+        //jugadores.add("");
     }
 
     @Override
@@ -74,7 +79,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 System.out.println("mapa boni");
                 break;
             case 4:
-                System.out.println(jugadores[parseInt(session.getId())] +" ha pulsado join");
+                //EL ERROR DA AQUÍ--->  System.out.println(jugadores.get(parseInt(session.getId())) +" ha pulsado join"); <---EL ERROR DA AUÍ!!!!!!
                 String[] misDatos = new String[3];
                 misDatos[0] = "4";
                 misDatos[1] = datos[1];
@@ -140,5 +145,14 @@ class WebSocketDataHandler extends TextWebSocketHandler {
             participant.sendMessage(new TextMessage(mens));
         }
     }
+    
+    private void enviarListaNombres(WebSocketSession session) throws IOException{
+        Gson gson = new Gson();
+        String[] datos = new String[2];
+        datos[0] = "5";
+        datos[1] = gson.toJson(jugadores, ArrayList.class);
+        session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+    }
+    
     
 }

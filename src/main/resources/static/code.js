@@ -1,8 +1,11 @@
 var game;
 
 function cargarGame(){
+    
     document.getElementById('cajaGame').innerHTML = "";
     game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
+    document.getElementById('countdown').volume = 0.5;
+    document.getElementById('countdown').play();
     
 }
 
@@ -288,8 +291,6 @@ function destruirLadrillo(x, y){
 
 var partida = function(){
     this.init = function(){
-
-        document.getElementById("countdown").volume = 0.5;
 
         boom = game.add.audio('BOOM');
         boom.volume = 0.15;

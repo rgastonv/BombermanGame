@@ -1,5 +1,6 @@
 package com.example.bombermanserver;
 
+import static com.example.bombermanserver.BomberserverApplication.numSesiones;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     
-        public static String[] jugadores = new String[8];//public static ArrayList<String> jugadores = new ArrayList<String>();
+        public static ArrayList<String> jugadores = new ArrayList<String>();
 	
 	@GetMapping("/records")
 	public ArrayList<Jugador> getRecords() throws FileNotFoundException, IOException {
@@ -91,19 +92,39 @@ public class Controller {
         @PostMapping("/login/{id}")
 	public String loginP(@PathVariable int id, @RequestBody String nombre) throws FileNotFoundException, IOException {
             
-            jugadores[id] = nombre; //jugadores.add(id, nombre);
-            for(int i = 0; i < jugadores.length; i++){
-                System.out.println("Ejecutado loginP - " + jugadores[i]);
+            ArrayList<String> arrAux = new ArrayList<String>();
+            for(int i =0;i<numSesiones;i++){
+                arrAux.add("");
             }
+            arrAux.set(id,nombre);
+            
+            for(int i = 0; i < jugadores.size(); i++){
+                if(!jugadores.get(i).equals("")){
+                    arrAux.set(i,jugadores.get(i));
+                }
+            }
+            
+            jugadores.clear();
+            for(int i = 0; i < arrAux.size(); i++){
+                jugadores.add(arrAux.get(i));
+            }
+            //jugadores.add("");
+            
+            //jugadores.set(id, nombre);
+            
+            /*for(int i = 0; i < jugadores.size(); i++){
+                System.out.println("Ejecutado loginP - " + jugadores.get(i));
+            }*/
+            
+            
             return nombre;
 	}
         
         @GetMapping("/login/{id}")
 	public ResponseEntity<String> loginG(@PathVariable int id) throws FileNotFoundException, IOException {   
-           //return new ResponseEntity<>("Josefa", HttpStatus.OK);
-            
-            if (jugadores[id] != null){
-                return new ResponseEntity<>(jugadores[id], HttpStatus.OK);
+           
+            if (jugadores.get(id) != null){
+                return new ResponseEntity<>(jugadores.get(id), HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
