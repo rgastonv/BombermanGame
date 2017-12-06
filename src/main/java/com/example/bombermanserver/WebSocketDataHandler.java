@@ -2,6 +2,7 @@ package com.example.bombermanserver;
 
 import static com.example.bombermanserver.BomberserverApplication.mapa;
 import static com.example.bombermanserver.BomberserverApplication.mapaBonificadores;
+import static com.example.bombermanserver.Controller.jugadores;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -60,14 +61,26 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         
         switch(tipo){
             case 0:
-                System.out.println("Cómo narices he hecho esto");
+                System.out.println("ids");
                 break;
             case 1:
                 int[] act = gson.fromJson(datos[1], int[].class);
                 enviarAcciones(act);
                 break;
             case 2:
-                System.out.println("Y esto?");
+                System.out.println("mapa");
+                break;
+            case 3:
+                System.out.println("mapa boni");
+                break;
+            case 4:
+                System.out.println(jugadores[parseInt(session.getId())] +" ha pulsado join");
+                String[] misDatos = new String[3];
+                misDatos[0] = "4";
+                misDatos[1] = datos[1];
+                misDatos[2] = session.getId();
+                String mens = gson.toJson(misDatos, String[].class);
+                avisarTabla(mens);
                 break;
             default:
                 break;
@@ -113,6 +126,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         datos[1] = mapa;
         session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
     }
+    
     private void enviarMapaB(WebSocketSession session, String mapa) throws IOException{
         Gson gson = new Gson();
         String[] datos = new String[2];
@@ -120,4 +134,11 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         datos[1] = mapa;
         session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
     }
+    
+    private void avisarTabla(String mens) throws IOException{ //Manda una señal a todos los clientes para que realicen el GET de la tabla
+        for(WebSocketSession participant : sessions.values()) {
+            participant.sendMessage(new TextMessage(mens));
+        }
+    }
+    
 }

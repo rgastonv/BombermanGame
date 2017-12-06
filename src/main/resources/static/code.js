@@ -1,4 +1,10 @@
-var game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
+var game;
+
+function cargarGame(){
+    document.getElementById('cajaGame').innerHTML = "";
+    game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
+    
+}
 
 var mapa = [                                                    // Mapa de tiles
                 [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],            // 0: Césped

@@ -28,6 +28,34 @@ connection.onmessage = function(msg) {
         case 3:
             mapaBonificadores2  = JSON.parse(message[1]);
             break;
+        case 4://hacer tabla con el array recibido actualizado
+            var nom = message[1];
+            var nId = parseInt(message[2]);
+            
+            nombres[nId] = nom;
+            
+            document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
+                        "<form>"+
+                            "<div class=\"form-group\" align=\"center\">"+
+                                "<p> Jugador " + nId +": " + nom +"</p> "+
+                            "</div>"+
+                        "</form>"+
+                    "</div>";
+            
+            
+            /*$.ajax({
+            type: 'GET',
+            url:"/login/" + 0,
+            headers: {
+                "Content-type": "application/json"
+            }
+            }).done(function(dato) {
+                nombres[0] = dato;
+                console.log(dato);
+            });*/
+            
+    
+            break;
         default:
             console.log("Ha saltado default en conexion")
             break;

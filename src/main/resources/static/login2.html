@@ -21,23 +21,12 @@
             function loadGame(){
 
                 var n1 = document.getElementById("nombre1").value;
-                var n2 = document.getElementById("nombre2").value;
                 if (n1 == null || n1 == "") {n1 = "anónimo";}
-                if (n2 == null || n2 == "") {n2 = "anónimo";} 
 
                 $.ajax({
                     type: 'POST',
                     url:"/login/1",
                     data: n1,
-                    headers:{
-                        "Content-Type": "application/json",
-                    }
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url:"/login/2",
-                    data: n2,
                     headers:{
                         "Content-Type": "application/json",
                     }
@@ -63,17 +52,6 @@
                             <div class="form-group" align="center">
                                 <label for="nom1"><h1>Player 1:</h1></label>
                                 <input type="text" class="form-control" id="nombre1">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="row">
-                    
-                    <div class="col-xs-12" style="background-color:pink">
-                        <form>
-                            <div class="form-group" align="center">
-                                <label for="nom2"><h1>Player 2:</h1></label>
-                                <input type="text" class="form-control" id="nombre2">
                             </div>
                         </form>
                     </div>

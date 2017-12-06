@@ -1,30 +1,19 @@
 //Array:
 
 var tecla;
+var nombres = [];
 
-var nombre1;
-var nombre2;
-
-
-$.ajax({
+    /*$.ajax({
     type: 'GET',
-    url:"/login/1",
+    url:"/login/" + i,
     headers: {
         "Content-type": "application/json"
     }
-}).done(function(dato) {
-    nombre1 = dato;
-});
+    }).done(function(dato) {
+        nombres[i] = dato;
+    });*/
 
-$.ajax({
-    type: 'GET',
-    url:"/login/2",
-    headers: {
-        "Content-type": "application/json"
-    }
-}).done(function(dato) {
-    nombre2 = dato;
-});
+
 
 
 var jugador = function(id){
@@ -38,8 +27,9 @@ var jugador = function(id){
         -  = (4) -> Jugador Quieto
     */
     this.bools = [false,false,false,false,true,false];
-    var nombre;
+    
     var id = id;
+    var nombre = nombres[id];
     var sprite;
     this.rng; //Rango de sus bombas
     this.vel; //Velocidad
@@ -51,35 +41,28 @@ var jugador = function(id){
     this.init = function(){
         switch(id){
             case 0:
-                nombre = nombre1;
                 sprite = game.add.sprite(30, 12, 'prota1');
                 break;
             case 1:
-                nombre = nombre2;
                 sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
                 break;
             case 2:
-                nombre = "Andrés";
                 sprite = game.add.sprite(30, 268, 'prota3');
                 break;
             case 3:
-                nombre = "Elena";
                 sprite = game.add.sprite(game.world.width - 68, 268, 'prota4');
                 break;
             case 4:
-                nombre = "Felipe";
                 sprite = game.add.sprite(30, 396, 'prota5');
                 break;
             case 5:
-                nombre = "Raquel";
                 sprite = game.add.sprite(game.world.width - 68, 396, 'prota6');
                 break;
             case 6:
-                nombre = "Obama";
                 sprite = game.add.sprite(30, 620, 'prota7');
                 break;
             case 7:
-                nombre = "M. Rajoy";
+                //nombre = "M. Rajoy";
                 sprite = game.add.sprite(game.world.width - 68, 620, 'prota8');
                 break;
         }

@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
     
-    public static String[] jugadores = new String[2];
+        public static String[] jugadores = new String[8];//public static ArrayList<String> jugadores = new ArrayList<String>();
 	
 	@GetMapping("/records")
 	public ArrayList<Jugador> getRecords() throws FileNotFoundException, IOException {
@@ -90,14 +90,20 @@ public class Controller {
         
         @PostMapping("/login/{id}")
 	public String loginP(@PathVariable int id, @RequestBody String nombre) throws FileNotFoundException, IOException {
-            jugadores[id-1] = nombre;
+            
+            jugadores[id] = nombre; //jugadores.add(id, nombre);
+            for(int i = 0; i < jugadores.length; i++){
+                System.out.println("Ejecutado loginP - " + jugadores[i]);
+            }
             return nombre;
 	}
         
         @GetMapping("/login/{id}")
 	public ResponseEntity<String> loginG(@PathVariable int id) throws FileNotFoundException, IOException {   
-            if (jugadores[id-1] != null){
-                return new ResponseEntity<>(jugadores[id-1], HttpStatus.OK);
+           //return new ResponseEntity<>("Josefa", HttpStatus.OK);
+            
+            if (jugadores[id] != null){
+                return new ResponseEntity<>(jugadores[id], HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
