@@ -108,6 +108,7 @@ public class Controller {
             for(int i = 0; i < arrAux.size(); i++){
                 jugadores.add(arrAux.get(i));
             }
+            System.out.println("nJugadores es" + jugadores.size());
             //jugadores.add("");
             
             //jugadores.set(id, nombre);

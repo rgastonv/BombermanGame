@@ -13,6 +13,7 @@ import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.websocket.OnMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -55,6 +56,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        
         System.out.println("Datos recibidos: " + message.getPayload());
         
         String msg = message.getPayload();
@@ -87,6 +89,11 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 String mens = gson.toJson(misDatos, String[].class);
                 avisarTabla(mens);
                 break;
+            case 6:
+                for(WebSocketSession participant : sessions.values()) {
+                    participant.sendMessage(new TextMessage("[6,"+numSesiones + "]"));
+                }
+                break;
             default:
                 break;
         }    
@@ -94,7 +101,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
 
         //sendOtherParticipants(session, node);
     }
-
+   
     /*private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
 
         System.out.println("Datos enviados: " + node.toString());

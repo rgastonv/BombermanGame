@@ -3,6 +3,7 @@ var connection = new WebSocket("ws://" + window.location.host + "/data");
 var jugadores = [];
 var randomMapa;
 var mapaBonificadores2;
+var nJugadores;
 
 connection.onerror = function(e) {
 	console.log("WebSocket ha fallado: " + e);
@@ -34,6 +35,7 @@ connection.onmessage = function(msg) {
             
             nombres[nId] = nom;
             
+            nJugadores = nombres.length;
             document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
                             "<div class=\"form-group\" align=\"center\">"+
@@ -67,10 +69,21 @@ connection.onmessage = function(msg) {
                             "</div>"+
                         "</form>"+
                     "</div>";
+            
+                    nombres[i]=fefeo[i];
             }
             
             
             break;
+        case 6:
+            if(nombres.length == parseInt(message[1])){
+                cargarGame();
+            }else{
+                alert("falta alguien cerda!");
+            }
+            
+            break;
+        
         default:
             console.log("Ha saltado default en conexion")
             break;

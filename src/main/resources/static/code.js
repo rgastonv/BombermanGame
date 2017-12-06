@@ -1,5 +1,9 @@
 var game;
 
+function peti6(){
+    connection.send("[6]");
+}
+
 function cargarGame(){
     
     document.getElementById('cajaGame').innerHTML = "";
@@ -101,7 +105,7 @@ var mapaBonificadores = [
 
 
 var cursors;
-var nJugadores = 8;
+
 var indexBomba = 0; // Índice de la bomba en el mapa
 var bombasCont = 0; // Índice de la bomba en el grupo
 
