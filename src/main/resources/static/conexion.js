@@ -47,7 +47,7 @@ connection.onmessage = function(msg) {
                 document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
                             "<div class=\"form-group\" align=\"center\">"+
-                                "<p id=\"parrafo"+ nId +"\"> Jugador " + nId +": " + aux +"</p> "+
+                                "<p id=\"parrafo" + nId +"\"><img src=\"Sprites/jug_" + nId + ".png\">" + " - " + aux +"</p> "+
                             "</div>"+
                         "</form>"+
                     "</div>";
@@ -83,12 +83,12 @@ connection.onmessage = function(msg) {
                     document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
                             "<div class=\"form-group\" align=\"center\">"+
-                                "<p id=\"parrafo"+ i +"\"> Jugador " + i +": " + aux +"</p> "+
+                                "<p id=\"parrafo" + i +"\"><img src=\"Sprites/jug_" + i + ".png\">" + " - " + aux +"</p> "+
                             "</div>"+
                         "</form>"+
                     "</div>";  
                 }else{
-                    document.getElementById('parrafo' + i).innerHTML = "Jugador " + i +": " + aux;
+                    document.getElementById('parrafo' + i).innerHTML = "<img src=\"Sprites/jug_" + i + ".png\">" + " - " + aux;
                 }
 
             
