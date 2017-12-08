@@ -1,9 +1,5 @@
 var game;
 
-function peti6(){
-    connection.send("[6]");
-}
-
 function cargarGame(){
     
     document.getElementById('cajaGame').innerHTML = "";

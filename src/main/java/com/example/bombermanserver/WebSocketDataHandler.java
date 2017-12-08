@@ -1,5 +1,6 @@
 package com.example.bombermanserver;
 
+import static com.example.bombermanserver.BomberserverApplication.nJoined;
 import static com.example.bombermanserver.BomberserverApplication.mapa;
 import static com.example.bombermanserver.BomberserverApplication.numSesiones;
 import static com.example.bombermanserver.BomberserverApplication.mapaBonificadores;
@@ -44,8 +45,11 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         aux = gson.toJson(mapaBonificadores, int[][].class);
         enviarMapaB(session, aux);
         
-        lJugWS.add(parseInt(session.getId()), "...");
         
+        int sesionInt = Integer.parseInt(session.getId(), 16);
+        if(sesionInt < 8){
+            lJugWS.add(parseInt(session.getId()), "...");
+        }
         enviarListaNombres();
         //jugadores.add("");
     }
@@ -83,6 +87,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 System.out.println("mapa boni");
                 break;
             case 4:
+                nJoined++;
                 //EL ERROR DA AQUÍ--->  System.out.println(jugadores.get(parseInt(session.getId())) +" ha pulsado join"); <---EL ERROR DA AUÍ!!!!!!
                 String[] misDatos = new String[3];
                 misDatos[0] = "4";
@@ -94,7 +99,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 break;
             case 6:
                 for(WebSocketSession participant : sessions.values()) {
-                    participant.sendMessage(new TextMessage("[6,"+numSesiones + "]"));
+                    participant.sendMessage(new TextMessage("[6," + numSesiones+ "," + nJoined + "," + session.getId() + "]"));
                 }
                 break;
             default:

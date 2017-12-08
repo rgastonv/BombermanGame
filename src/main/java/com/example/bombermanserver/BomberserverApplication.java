@@ -29,9 +29,11 @@ public class BomberserverApplication implements WebSocketConfigurer {
     public static int[][] mapa = new int[22][17];
     public static int[][] mapaBonificadores = new int[22][17];
     public static int numSesiones;
-    
+    public static int nJoined;
     
     public static void main(String[] args) throws IOException {
+        
+        nJoined = 0;
         
         for(int i=0; i < mapa.length; i++){
             for(int j=0; j < mapa[0].length; j++){

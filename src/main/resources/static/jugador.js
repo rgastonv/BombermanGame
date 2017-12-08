@@ -325,27 +325,6 @@ function pillarInput(){
 
     }
     
-    if(jugadores[1] != undefined){
-        //Controles del jugador 2: flechas
-        if (game.input.keyboard.isDown(Phaser.Keyboard.J)){
-            jugadores[1].action(0);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
-        } // Izquierda
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.I)){
-            jugadores[1].action(1)
-            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
-        } // Arriba
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.K)){
-            jugadores[1].action(2);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
-        } // Abajo
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.L)){
-            jugadores[1].action(3);
-            if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);}
-        } // Derecha
-        else if(game.input.keyboard.isDown(Phaser.Keyboard.U)){jugadores[1].action(5);} // PonerBomba
-        else{jugadores[1].action(-1);} // Quieto
-    }
 }
 
 function moverJugadores(){

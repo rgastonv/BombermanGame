@@ -36,13 +36,7 @@ connection.onmessage = function(msg) {
             
             nombres[nId] = nom;
             
-            nJugadores = nombres.length;
-            
-            if(nom==""){
-                aux = "...";
-            }else{
-                aux = nom;
-            }
+            aux = nom;
             
             if (document.getElementById('parrafo' + nId) == null){
                 document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
@@ -97,18 +91,22 @@ connection.onmessage = function(msg) {
             
                 nombres[i]=fefeo[i];
                 
-                if (nombres.length >= 8){
+                if (nombres.length >= 8 && myLocalId >= 8){
                     document.getElementById('filaInput').innerHTML ="";
                     document.getElementById('filaTituloInput').innerHTML ="<p>Ya se ha alcanzado el número máximo de jugadores para esta sala. ¡Espera, por favor!</p>";
+                    //Borrar botón play
                 }
             }
             
             break;
         case 6:
-            if(nombres.length == parseInt(message[1]) || nombres.length == 8){
+            if(parseInt(message[2]) == parseInt(message[1]) || parseInt(message[2]) == 8){
                 cargarGame();
+                nJugadores = parseInt(message[2]);
             }else{
-                alert("Falta alguien por unirse a la sala.");
+                if(parseInt(message[3]) == myLocalId){
+                    alert("Falta alguien por unirse a la sala.");
+                }
             }
             
             break;
