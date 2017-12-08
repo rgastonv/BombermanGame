@@ -110,6 +110,26 @@ connection.onmessage = function(msg) {
             }
             
             break;
+            
+        case 7:
+            var aux = JSON.parse(message[1]);
+           // console.log(aux);
+            
+            
+            for(var i =0; i<nJugadores;i++){
+                if(aux[i] == null && jugadores[i]!= undefined){
+                    jugadores[i].matar();
+                }
+                if(jugadores[i]!= undefined){
+                    jugadores[i].setSpritePos(parseFloat(aux[i].posXY[0]),parseFloat(aux[i].posXY[1]));
+                }
+                
+                console.log("Actualizado jugador"+i);
+            }
+            
+            
+            
+            break;
         
         default:
             console.log("Ha saltado default en conexion")

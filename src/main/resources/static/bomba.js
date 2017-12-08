@@ -59,8 +59,8 @@ var bomba = function(rng, x, y, idJ, idB){
         
         
         for(var g = 0; g < jugadores.length; g++){ // Elimina al jugador si su posición coincide con la de una bomba
-            if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x && jugadores[g].getPos()[1]==(y)){
-                jugadores[g].matar();
+            if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x && jugadores[g].getPos()[1]==(y) ){
+                if( myLocalId==0 ){jugadores[g].matar();}
             }
         }
 
@@ -93,7 +93,7 @@ var bomba = function(rng, x, y, idJ, idB){
 
                 for(var g = 0; g < jugadores.length; g++){ // Se mata al jugador
                     if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x && jugadores[g].getPos()[1] == (y+i)){
-                        jugadores[g].matar();
+                        if( myLocalId==0 ){jugadores[g].matar();}
                     }
                 }
             }else{
@@ -127,7 +127,7 @@ var bomba = function(rng, x, y, idJ, idB){
 
                 for(var g = 0; g < jugadores.length; g++){
                     if(jugadores[g] != undefined && jugadores[g] != undefined && jugadores[g].getPos()[0] == x && jugadores[g].getPos()[1]==(y-i)){
-                        jugadores[g].matar();
+                        if( myLocalId==0 ){jugadores[g].matar();}
                     }
                 }
             }else{
@@ -160,7 +160,7 @@ var bomba = function(rng, x, y, idJ, idB){
 
                 for(var g = 0; g < jugadores.length; g++){
                     if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x+i && jugadores[g].getPos()[1]==(y)){
-                        jugadores[g].matar();
+                        if( myLocalId==0 ){jugadores[g].matar();}
                     }
                 }
             }else{
@@ -193,8 +193,10 @@ var bomba = function(rng, x, y, idJ, idB){
                 }
 
                 for(var g = 0; g<jugadores.length; g++){
-                    if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x-i && jugadores[g].getPos()[1]==(y)){
-                        jugadores[g].matar();
+                    if(jugadores[g] != undefined && jugadores[g].getPos()[0] == x-i && jugadores[g].getPos()[1]==(y) ){
+                        console.log("EEEEEEEEEEEEEE"+myLocalId);
+                        if( myLocalId==0 ){jugadores[g].matar();}
+                        
                     }
                 }
             }else{

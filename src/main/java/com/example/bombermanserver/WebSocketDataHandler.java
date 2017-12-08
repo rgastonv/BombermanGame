@@ -21,11 +21,10 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 class WebSocketDataHandler extends TextWebSocketHandler {
-    
+
     public Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
     private ObjectMapper mapper = new ObjectMapper(); //Convertidor json (jackson)
     public ArrayList<String> lJugWS = new ArrayList<String>();
-    
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -38,16 +37,15 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         datos[1] = session.getId();
 
         session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
-        
+
         String aux = gson.toJson(mapa, int[][].class);
         enviarMapa(session, aux);
-        
+
         aux = gson.toJson(mapaBonificadores, int[][].class);
         enviarMapaB(session, aux);
-        
-        
+
         int sesionInt = Integer.parseInt(session.getId(), 16);
-        if(sesionInt < 8){
+        if (sesionInt < 8) {
             lJugWS.add(parseInt(session.getId()), "...");
         }
         enviarListaNombres();
@@ -62,17 +60,17 @@ class WebSocketDataHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        
+
         System.out.println("Datos recibidos: " + message.getPayload());
-        
+
         String msg = message.getPayload();
         String[] datos;
-        
+
         Gson gson = new Gson();
         datos = gson.fromJson(msg, String[].class);
         int tipo = parseInt(datos[0]);
-        
-        switch(tipo){
+
+        switch (tipo) {
             case 0:
                 System.out.println("ids");
                 break;
@@ -98,18 +96,20 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 avisarTabla(mens);
                 break;
             case 6:
-                for(WebSocketSession participant : sessions.values()) {
-                    participant.sendMessage(new TextMessage("[6," + numSesiones+ "," + nJoined + "," + session.getId() + "]"));
+                for (WebSocketSession participant : sessions.values()) {
+                    participant.sendMessage(new TextMessage("[6," + numSesiones + "," + nJoined + "," + session.getId() + "]"));
                 }
+                break;
+            case 7:
+                actuJug(datos[1]);
                 break;
             default:
                 break;
-        }    
-        
+        }
 
         //sendOtherParticipants(session, node);
     }
-   
+
     /*private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
 
         System.out.println("Datos enviados: " + node.toString());
@@ -127,52 +127,64 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         }
         
     }*/
-    
-    private void enviarAcciones(int[] act) throws IOException{
-        for(WebSocketSession participant : sessions.values()) {
+    private void enviarAcciones(int[] act) throws IOException {
+        for (WebSocketSession participant : sessions.values()) {
             Gson gson = new Gson();
             String[] datos = new String[2];
             datos[0] = "1";
             datos[1] = gson.toJson(act, int[].class);
-            
+
             participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
         }
     }
-    
-    private void enviarMapa(WebSocketSession session, String mapa) throws IOException{
+
+    private void enviarMapa(WebSocketSession session, String mapa) throws IOException {
         Gson gson = new Gson();
         String[] datos = new String[2];
         datos[0] = "2";
         datos[1] = mapa;
         session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
     }
-    
-    private void enviarMapaB(WebSocketSession session, String mapa) throws IOException{
+
+    private void enviarMapaB(WebSocketSession session, String mapa) throws IOException {
         Gson gson = new Gson();
         String[] datos = new String[2];
         datos[0] = "3";
         datos[1] = mapa;
         session.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
     }
-    
-    private void avisarTabla(String mens) throws IOException{ //Manda una señal a todos los clientes para que realicen el GET de la tabla
-        for(WebSocketSession participant : sessions.values()) {
-            
+
+    private void avisarTabla(String mens) throws IOException { //Manda una señal a todos los clientes para que realicen el GET de la tabla
+        for (WebSocketSession participant : sessions.values()) {
+
             participant.sendMessage(new TextMessage(mens));
         }
     }
-    
-    private void enviarListaNombres() throws IOException{
+
+    private void enviarListaNombres() throws IOException {
         Gson gson = new Gson();
         String[] datos = new String[2];
- 
-        for(WebSocketSession participant : sessions.values()) {
+
+        for (WebSocketSession participant : sessions.values()) {
             datos[0] = "5";
             datos[1] = gson.toJson(lJugWS, ArrayList.class);
 
             participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
         }
     }
-    
-    
+
+    private void actuJug(String dato) throws IOException {
+        Gson gson = new Gson();
+        JugadorGame[] arrJug = gson.fromJson(dato, JugadorGame[].class);
+
+        String[] datos = new String[2];
+        for (WebSocketSession participant : sessions.values()) {
+            datos[0] = "7";
+            datos[1] = gson.toJson(arrJug, JugadorGame[].class);
+
+            participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+        }
+
+    }
+
 }

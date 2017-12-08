@@ -3,16 +3,6 @@
 var tecla;
 
 
-    /*$.ajax({
-    type: 'GET',
-    url:"/login/" + i,
-    headers: {
-        "Content-type": "application/json"
-    }
-    }).done(function(dato) {
-        nombres[i] = dato;
-    });*/
-
 
 
 
@@ -28,20 +18,21 @@ var jugador = function(id){
     */
     this.bools = [false,false,false,false,true,false];
     
-    var id = id;
+    this.id = id;
     var nombre = nombres[id];
     var sprite;
     this.rng; //Rango de sus bombas
     this.vel; //Velocidad
     this.nBombas; //Número de bombas
-
-
+    this.posXY = [];
+    
             //Cuando solo se juegue con un jugador, aquí habrá que hacer un POST que suba el nombre al servidor para que este administre los 8 nombres
             //Cuando acabe la partida, en CantarVictoria se pide al servidor el nombre del ganador (no se ocupa el cliente de almacenarlos)
     this.init = function(){
         switch(id){
             case 0:
                 sprite = game.add.sprite(30, 12, 'prota1');
+                
                 break;
             case 1:
                 sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
@@ -66,6 +57,7 @@ var jugador = function(id){
                 sprite = game.add.sprite(game.world.width - 68, 620, 'prota8');
                 break;
         }
+        this.setPosXY();
 
         game.physics.arcade.enable(sprite); // Se activan las físicas de los jugadores
         sprite.body.collideWorldBounds = true;
@@ -81,7 +73,7 @@ var jugador = function(id){
         this.vel = 75;
         this.nBombas = 1;
     }
-
+    
     this.getNombre = function(){
         return nombre;
     }
@@ -199,6 +191,14 @@ var jugador = function(id){
         pos[0]= Math.floor((sprite.position.x+19)/32);
         pos[1]= Math.floor(((sprite.position.y-12)+51)/32); 
         return pos;
+    }
+    this.setPosXY = function(){//Para actualizar en update y pasarlo al server.
+        this.posXY[0]= sprite.position.x;
+        this.posXY[1]= sprite.position.y;
+    }
+    this.setSpritePos = function(x,y){//Para recibir del server y modificar el spritePos.
+        sprite.position.x= x;
+        sprite.position.y= y;
     }
 
     this.ponerBomba = function(){
@@ -330,6 +330,7 @@ function pillarInput(){
 function moverJugadores(){
     for(var i =0;i<jugadores.length;i++){
         if(jugadores[i]!= undefined){
+            jugadores[i].setPosXY();
             for(var j = 0; j < jugadores[i].bools.length; j++){
                 if(jugadores[i].bools[j]){
                     jugadores[i].action(j);
