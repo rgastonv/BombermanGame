@@ -23,7 +23,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
     
     public Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
     private ObjectMapper mapper = new ObjectMapper(); //Convertidor json (jackson)
-    
+    public ArrayList<String> lJugWS = new ArrayList<String>();
     
 
     @Override
@@ -43,6 +43,8 @@ class WebSocketDataHandler extends TextWebSocketHandler {
         
         aux = gson.toJson(mapaBonificadores, int[][].class);
         enviarMapaB(session, aux);
+        
+        lJugWS.add(parseInt(session.getId()), "...");
         
         enviarListaNombres();
         //jugadores.add("");
@@ -87,6 +89,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 misDatos[1] = datos[1];
                 misDatos[2] = session.getId();
                 String mens = gson.toJson(misDatos, String[].class);
+                lJugWS.set(parseInt(session.getId()), misDatos[1]);
                 avisarTabla(mens);
                 break;
             case 6:
@@ -149,6 +152,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
     
     private void avisarTabla(String mens) throws IOException{ //Manda una señal a todos los clientes para que realicen el GET de la tabla
         for(WebSocketSession participant : sessions.values()) {
+            
             participant.sendMessage(new TextMessage(mens));
         }
     }
@@ -159,7 +163,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
  
         for(WebSocketSession participant : sessions.values()) {
             datos[0] = "5";
-            datos[1] = gson.toJson(jugadores, ArrayList.class);
+            datos[1] = gson.toJson(lJugWS, ArrayList.class);
 
             participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
         }

@@ -1,7 +1,7 @@
 //Array:
 
 var tecla;
-var nombres = [];
+
 
     /*$.ajax({
     type: 'GET',

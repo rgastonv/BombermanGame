@@ -4,6 +4,7 @@ var jugadores = [];
 var randomMapa;
 var mapaBonificadores2;
 var nJugadores;
+var nombres = [];
 
 connection.onerror = function(e) {
 	console.log("WebSocket ha fallado: " + e);
@@ -52,7 +53,7 @@ connection.onmessage = function(msg) {
                         "</form>"+
                     "</div>";
             }else{
-                document.getElementById('parrafo' + nId).innerHTML = "Jugador " + nId +": " + aux;
+                document.getElementById('parrafo' + nId).innerHTML = "<img src=\"Sprites/jug_" + nId + ".png\">" + " - " + aux;
             }
             
             
@@ -74,11 +75,13 @@ connection.onmessage = function(msg) {
             var aux;
             console.log(fefeo);
             for(var i = 0; i<fefeo.length; i++){
-                if(fefeo[i]==""){
-                    aux = "...";
-                }else{
-                    aux = fefeo[i];
-                }
+                
+                
+                
+                
+                
+                aux = fefeo[i];
+                
                 if (document.getElementById('parrafo'+i)== null){             
                     document.getElementById('cajaJugadores').innerHTML += "<div class=\"col-xs-12\" style=\"background-color:aliceblue\"> "+
                         "<form>"+
