@@ -6,18 +6,18 @@ function cargarGame(){
     game = new Phaser.Game(544, 712, Phaser.AUTO, 'cajaGame', { preload: preload, create: create, update: update });
     document.getElementById('countdown').volume = 0.5;
     document.getElementById('countdown').play();
-   
-    if(myLocalId == 0){
-        setInterval(function(){
-            var datos = [];
-            datos[0] = "7";
-            datos[1] = JSON.stringify(jugadores);
-            connection.send(JSON.stringify(datos));
-        
-        }, 200);
-    }
     
+    setTimeout(function(){
+        if(myLocalId == 0){
+            setInterval(function(){
+                var datos = [];
+                datos[0] = "7";
+                datos[1] = JSON.stringify(jugadores);
+                connection.send(JSON.stringify(datos));
 
+            }, 500);
+        }
+    }, 1000);
 }
 
 var mapa = [                                                    // Mapa de tiles
@@ -250,15 +250,17 @@ var cantarVictoria = function(){
             document.getElementById("musica").pause();
             winner.play();
 
-            //POST
-            $.ajax({
-                type: 'POST',
-                url:"/actualizar",
-                data: jugadores[i].getNombre(),
-                headers:{
-                    "Content-Type": "application/json",
-                }
-            });
+            if(myLocalId == 0){
+                //POST
+                $.ajax({
+                    type: 'POST',
+                    url:"/actualizar",
+                    data: jugadores[i].getNombre(),
+                    headers:{
+                        "Content-Type": "application/json",
+                    }
+                });
+            }
 
         }
     }

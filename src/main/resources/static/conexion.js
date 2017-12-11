@@ -116,7 +116,7 @@ connection.onmessage = function(msg) {
            // console.log(aux);
             
             
-            for(var i =0; i<nJugadores;i++){
+            for(var i =0; i< aux.length ;i++){
                 if(aux[i] == null && jugadores[i]!= undefined){
                     jugadores[i].matar();
                 }

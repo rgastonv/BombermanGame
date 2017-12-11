@@ -61,6 +61,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
+        synchronized(sessions) {
         System.out.println("Datos recibidos: " + message.getPayload());
 
         String msg = message.getPayload();
@@ -105,6 +106,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
                 break;
             default:
                 break;
+        }
         }
 
         //sendOtherParticipants(session, node);
@@ -183,6 +185,7 @@ class WebSocketDataHandler extends TextWebSocketHandler {
             datos[1] = gson.toJson(arrJug, JugadorGame[].class);
 
             participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
+            
         }
 
     }
