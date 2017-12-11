@@ -222,3 +222,31 @@
 
 
   </ul>
+
+### Fase 4
+<ul>
+  <li><b>Documentación:</b></li>
+
+  <p>Cada mensaje de WebSockets se trata de un array de dos Strings: el primero es el código numérico con el que identificamos el tipo de mensaje; el segundo es el conjunto de datos necesarios en formato JSON. </p>
+  <p>Tipos de llamadas con WebSockets:</p>
+      <ul>
+        <li> <b>Código 0:</b> Se establece la conexión y el servidor manda al cliente su respectiva id. </li>
+        <li> <b>Código 1:</b> Cuando un jugador realiza un acción la manda al servidor y este se la reenvía a todos los clientes.</li>
+        <li> <b>Código 2:</b> Tras establecer la conexión el servidor envía el mapa aleatorio generado.</li>
+        <li> <b>Código 3:</b> Tras establecer la conexión el servidor envía el mapa de bonificadores aleatorio generado. </li>
+        <li> <b>Código 4:</b> Envía el nombre de cada jugador al servidor para ser almacenado en una lista de jugadores y el servidor           los reenvía a todos los clientes. </li>
+        <li> <b>Código 5:</b> Al acceder el cliente a la sala de login el servidor envía la tabla de jugadores conectados. </li>
+        <li> <b>Código 6:</b> Cuando un jugador pulsa al botón PLAY se envía un mensaje para que inicie la partida para todos a la vez.         </li>
+        <li> <b>Código 7:</b> Utilizando como HOST al primer jugador, se actualizan los datos de los demás jugadores pasador 500                  milisegundos para mantener el mismo estado de juego en todos los clientes. </li>
+      </ul>
+ </ul>
+  <br>
+  
+  <ul><li><b>Diagrama de clases:</b></li>
+  </ul>
+  <br>
+  
+   ![Diagrama](https://raw.githubusercontent.com/rgastonv/BombermanGame/master/img/diagramaFase4.jpg)
+ 
+  
+  </ul>
