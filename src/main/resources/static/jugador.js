@@ -1,21 +1,8 @@
-//Array:
-
 var tecla;
-
-
-
-
 
 var jugador = function(id){
     // id: Identificador del jugador (empezando en 0)
-    /*
-        -A / J =0 -> Jugador a la izquierda
-        -W / I =1 -> Jugador hacia arriba
-        -S / K =2 -> Jugador hacia abajo
-        -D / L =3 -> Jugador a la derecha
-        -Q / U = 5 -> Colocar bomba
-        -  = (4) -> Jugador Quieto
-    */
+    
     this.bools = [false,false,false,false,true,false];
     
     this.id = id;
@@ -26,13 +13,11 @@ var jugador = function(id){
     this.nBombas; //Número de bombas
     this.posXY = [];
     
-            //Cuando solo se juegue con un jugador, aquí habrá que hacer un POST que suba el nombre al servidor para que este administre los 8 nombres
-            //Cuando acabe la partida, en CantarVictoria se pide al servidor el nombre del ganador (no se ocupa el cliente de almacenarlos)
+    
     this.init = function(){
         switch(id){
             case 0:
                 sprite = game.add.sprite(30, 12, 'prota1');
-                
                 break;
             case 1:
                 sprite = game.add.sprite(game.world.width - 68, 12, 'prota2');
@@ -79,10 +64,14 @@ var jugador = function(id){
     }
 
     this.action = function (n){
-/*
-        //Mandar al server this.id y action(n)
-        
-*/
+        /*
+        -A = 0 -> Jugador a la izquierda
+        -W = 1 -> Jugador hacia arriba
+        -S = 2 -> Jugador hacia abajo
+        -D = 3 -> Jugador a la derecha
+        -Q = 5 -> Colocar bomba
+        -  = 4 -> Jugador Quieto
+        */
         switch(n){
             case 0:
 	            sprite.body.velocity.x = -this.vel;
@@ -219,22 +208,18 @@ var jugador = function(id){
 }
 
 function pillarInput(){
-     /*
-        -A / J =0 -> Jugador a la izquierda
-        -W / I =1 -> Jugador hacia arriba
-        -S / K =2 -> Jugador hacia abajo
-        -D / L =3 -> Jugador a la derecha
-        -Q / U = 5 -> Colocar bomba
-        -  = (4) -> Jugador Quieto
+    /*
+    -A = 0 -> Jugador a la izquierda
+    -W = 1 -> Jugador hacia arriba
+    -S = 2 -> Jugador hacia abajo
+    -D = 3 -> Jugador a la derecha
+    -Q = 5 -> Colocar bomba
+    -  = 4 -> Jugador Quieto
     */
-    
-    
-
+   
     if(jugadores[myLocalId] != undefined){
-        // Controles del jugador 1: ASDW
-
-        teclaQ = game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.add
-       
+        
+        teclaQ = game.input.keyboard.addKey(Phaser.Keyboard.A).onDown.add;
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)){
             if(!jugadores[myLocalId].bools[0]){
@@ -247,10 +232,6 @@ function pillarInput(){
                 jugadores[myLocalId].bools[0] = true;
             }
             
-            
-            
-            
-            //jugadores[myLocalId].action(0);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Izquierda
         else if (game.input.keyboard.isDown(Phaser.Keyboard.W)){
@@ -264,7 +245,6 @@ function pillarInput(){
                 jugadores[myLocalId].bools[1] = true;
             };
             
-            //jugadores[myLocalId].action(1);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Arriba
         else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
@@ -278,7 +258,6 @@ function pillarInput(){
                 jugadores[myLocalId].bools[2] = true;
             }
             
-            //jugadores[myLocalId].action(2);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Abajo
         else if (game.input.keyboard.isDown(Phaser.Keyboard.D)){
@@ -292,7 +271,6 @@ function pillarInput(){
                 jugadores[myLocalId].bools[3] = true;
             }
             
-            //jugadores[myLocalId].action(3);
             if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){jugadores[myLocalId].action(5);}
         } // Derecha
         else if(game.input.keyboard.isDown(Phaser.Keyboard.Q)){
@@ -306,7 +284,6 @@ function pillarInput(){
                 jugadores[myLocalId].bools[5] = true;
             }
             
-            //jugadores[myLocalId].action(5);
         } // PonerBomba
         else {
             if(!jugadores[myLocalId].bools[4]){
@@ -318,13 +295,8 @@ function pillarInput(){
                 connection.send(JSON.stringify(arr));
                 jugadores[myLocalId].bools[4] = true;
             }
-            
-           
-            //jugadores[myLocalId].action(4);
         } // Quieto
-
     }
-    
 }
 
 function moverJugadores(){
@@ -348,5 +320,4 @@ function moverJugadores2(id, act){
         }
         jugadores[id].bools[act] = true;
     }
-    
 }

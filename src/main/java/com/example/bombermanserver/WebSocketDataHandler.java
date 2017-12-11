@@ -4,17 +4,12 @@ import static com.example.bombermanserver.BomberserverApplication.nJoined;
 import static com.example.bombermanserver.BomberserverApplication.mapa;
 import static com.example.bombermanserver.BomberserverApplication.numSesiones;
 import static com.example.bombermanserver.BomberserverApplication.mapaBonificadores;
-import static com.example.bombermanserver.Controller.jugadores;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.websocket.OnMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -23,8 +18,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 class WebSocketDataHandler extends TextWebSocketHandler {
 
     public Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>(); //Mapa Hash de sesiones
-    private ObjectMapper mapper = new ObjectMapper(); //Convertidor json (jackson)
-    public ArrayList<String> lJugWS = new ArrayList<String>();
+    public ArrayList<String> lJugWS = new ArrayList<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -49,7 +43,6 @@ class WebSocketDataHandler extends TextWebSocketHandler {
             lJugWS.add(parseInt(session.getId()), "...");
         }
         enviarListaNombres();
-        //jugadores.add("");
     }
 
     @Override
@@ -62,73 +55,44 @@ class WebSocketDataHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
         synchronized(sessions) {
-        System.out.println("Datos recibidos: " + message.getPayload());
+            System.out.println("Datos recibidos: " + message.getPayload());
 
-        String msg = message.getPayload();
-        String[] datos;
+            String msg = message.getPayload();
+            String[] datos;
 
-        Gson gson = new Gson();
-        datos = gson.fromJson(msg, String[].class);
-        int tipo = parseInt(datos[0]);
+            Gson gson = new Gson();
+            datos = gson.fromJson(msg, String[].class);
+            int tipo = parseInt(datos[0]);
 
-        switch (tipo) {
-            case 0:
-                System.out.println("ids");
-                break;
-            case 1:
-                int[] act = gson.fromJson(datos[1], int[].class);
-                enviarAcciones(act);
-                break;
-            case 2:
-                System.out.println("mapa");
-                break;
-            case 3:
-                System.out.println("mapa boni");
-                break;
-            case 4:
-                nJoined++;
-                //EL ERROR DA AQUÍ--->  System.out.println(jugadores.get(parseInt(session.getId())) +" ha pulsado join"); <---EL ERROR DA AUÍ!!!!!!
-                String[] misDatos = new String[3];
-                misDatos[0] = "4";
-                misDatos[1] = datos[1];
-                misDatos[2] = session.getId();
-                String mens = gson.toJson(misDatos, String[].class);
-                lJugWS.set(parseInt(session.getId()), misDatos[1]);
-                avisarTabla(mens);
-                break;
-            case 6:
-                for (WebSocketSession participant : sessions.values()) {
-                    participant.sendMessage(new TextMessage("[6," + numSesiones + "," + nJoined + "," + session.getId() + "]"));
-                }
-                break;
-            case 7:
-                actuJug(datos[1]);
-                break;
-            default:
-                break;
-        }
-        }
-
-        //sendOtherParticipants(session, node);
-    }
-
-    /*private void sendOtherParticipants(WebSocketSession session, JsonNode node) throws IOException {
-
-        System.out.println("Datos enviados: " + node.toString());
-
-        
-        ObjectNode newNode = mapper.createObjectNode(); //Nodo con la info de message
-        
-        newNode.put("id", node.get("id").asText());
-        newNode.put("action", node.get("action").asText());
-
-        for(WebSocketSession participant : sessions.values()) {
-            if(!participant.getId().equals(session.getId())) {
-                participant.sendMessage(new TextMessage(newNode.toString()));
+            switch (tipo) {
+                case 1:
+                    int[] act = gson.fromJson(datos[1], int[].class);
+                    enviarAcciones(act);
+                    break;
+                case 4:
+                    nJoined++;
+                    String[] misDatos = new String[3];
+                    misDatos[0] = "4";
+                    misDatos[1] = datos[1];
+                    misDatos[2] = session.getId();
+                    String mens = gson.toJson(misDatos, String[].class);
+                    lJugWS.set(parseInt(session.getId()), misDatos[1]);
+                    avisarTabla(mens);
+                    break;
+                case 6:
+                    for (WebSocketSession participant : sessions.values()) {
+                        participant.sendMessage(new TextMessage("[6," + numSesiones + "," + nJoined + "," + session.getId() + "]"));
+                    }
+                    break;
+                case 7:
+                    actuJug(datos[1]);
+                    break;
+                default:
+                    break;
             }
         }
-        
-    }*/
+    }
+
     private void enviarAcciones(int[] act) throws IOException {
         for (WebSocketSession participant : sessions.values()) {
             Gson gson = new Gson();
@@ -187,7 +151,5 @@ class WebSocketDataHandler extends TextWebSocketHandler {
             participant.sendMessage(new TextMessage(gson.toJson(datos, String[].class)));
             
         }
-
     }
-
 }

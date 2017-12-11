@@ -108,9 +108,6 @@ var mapaBonificadores = [
      ];
 
 
-
-
-
 var cursors;
 
 var indexBomba = 0; // Índice de la bomba en el mapa
@@ -178,10 +175,6 @@ function preload() {
     game.load.image('FR', 'Sprites/FR.png');
     game.load.image('FB', 'Sprites/FB.png');
     game.load.image('FL', 'Sprites/FL.png');
-
-
-
-
 
     game.load.audio('BOOM', 'SONIDOS/BOMBA.wav');
     game.load.audio('POWERUP', 'SONIDOS/POWERUP.wav');

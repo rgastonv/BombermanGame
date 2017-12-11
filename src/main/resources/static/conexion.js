@@ -7,7 +7,7 @@ var nJugadores;
 var nombres = [];
 
 connection.onerror = function(e) {
-	console.log("WebSocket ha fallado: " + e);
+    console.log("WebSocket ha fallado: " + e);
 }
 
 connection.onmessage = function(msg) {
@@ -69,11 +69,6 @@ connection.onmessage = function(msg) {
             var aux;
             console.log(fefeo);
             for(var i = 0; i<fefeo.length; i++){
-                
-                
-                
-                
-                
                 aux = fefeo[i];
                 
                 if (document.getElementById('parrafo'+i)== null){             
@@ -113,8 +108,6 @@ connection.onmessage = function(msg) {
             
         case 7:
             var aux = JSON.parse(message[1]);
-           // console.log(aux);
-            
             
             for(var i =0; i< aux.length ;i++){
                 if(aux[i] == null && jugadores[i]!= undefined){
@@ -126,15 +119,11 @@ connection.onmessage = function(msg) {
                 
                 console.log("Actualizado jugador"+i);
             }
-            
-            
-            
             break;
         
         default:
             console.log("Ha saltado default en conexion")
             break;
-            
     }
     
 }
