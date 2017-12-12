@@ -1,5 +1,7 @@
 # Bomberman
-
+### Vídeo del juego
+[![VideoGameplay](https://img.youtube.com/vi/J7q4GyHVp1E/0.jpg)](https://www.youtube.com/watch?v=J7q4GyHVp1E)
+<br>
 ### Fase 1
 <br>
 <ul>
